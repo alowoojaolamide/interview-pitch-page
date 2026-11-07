@@ -33,7 +33,8 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
   "story":   { "label": "02 · The proof", "nav": "The proof", "title": "…", "intro": "…", "big": "Project", "project": "My role", "meta": "dates and scope",
                "chapters": [ { "label": "The problem", "nav": "The problem", "title": "…", "body": ["paragraph", "paragraph"],
                                "bullets": ["Optional list shown under the body, e.g. closing habits"],
-                               "image": { "src": "https://…", "alt": "…", "caption": "…" },
+                               "image": { "src": "https://…", "alt": "…", "caption": "…" },   // one wide screenshot
+                               "images": [ { "src": "https://…", "alt": "…", "caption": "short" } ],   // OR two to three phone screens side by side (scroll-snaps on small screens)
                                "stat": { "value": "214", "label": "what it counts, with source and date" },
                                "tags": ["public", "measured", "design", "judgement"] } ] },
 

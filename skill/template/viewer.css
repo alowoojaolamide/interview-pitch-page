@@ -110,6 +110,10 @@ section{position:relative;padding:clamp(80px,10vw,152px) var(--gutter)}
 .chap p{margin:0 0 1rem;max-width:62ch} .chap ul{margin:1.2rem 0 0;padding:0;list-style:none;display:grid;gap:0;max-width:62ch;border-top:1px solid var(--line)} .chap li{padding:14px 0;border-bottom:1px solid var(--line)} .chap .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .chap a{text-decoration:underline;text-underline-offset:3px}
 .shot{margin:1.8rem 0 0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--surface)} .shot img{width:100%;height:auto;will-change:transform}
+.phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:1.8rem;align-items:start}
+.phones .shot{margin:0;border-radius:18px}
+.phones .shot figcaption{padding:10px 12px;font-size:.8rem;line-height:1.35}
+@media (max-width:640px){.phones{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:58%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none}.phones::-webkit-scrollbar{display:none}.phones .shot{scroll-snap-align:start}}
 .shot figcaption{padding:12px 18px;font-size:.875rem;color:var(--muted);border-top:1px solid var(--line)}
 .stat{display:flex;align-items:baseline;gap:16px;margin-top:1.5rem;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:1.2rem} .stat b{font:var(--dw) clamp(2.8rem,6vw,4.6rem)/1 var(--display);color:var(--ink);letter-spacing:-.05em;font-variant-numeric:tabular-nums} .stat span{color:var(--muted);max-width:34ch;font-size:.95rem}
 

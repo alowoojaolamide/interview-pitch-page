@@ -77,7 +77,7 @@
       '<div class="chapters">' + ch.map(function (x, i) {
         return '<article class="chap" id="chap-' + i + '" data-r><p class="label">' + esc(x.label || "") + "</p><h3>" + esc(x.title) + "</h3>" + paras(x.body) + (x.bullets ? "<ul>" + x.bullets.map(function (b) { return "<li>" + md(b) + "</li>"; }).join("") + "</ul>" : "") +
           (x.stat ? '<div class="stat"><b data-count="' + esc(x.stat.value) + '">' + esc(x.stat.value) + "</b><span>" + esc(x.stat.label) + "</span></div>" : "") +
-          (x.image ? img(x.image, "par") : "") + '<div class="tags">' + (x.tags || []).map(tag).join("") + "</div></article>";
+          (x.image ? img(x.image, "par") : "") + (x.images ? '<div class="phones" data-lenis-prevent>' + x.images.map(function (i) { return img(i, "phone"); }).join("") + "</div>" : "") + '<div class="tags">' + (x.tags || []).map(tag).join("") + "</div></article>";
       }).join("") + "</div></div></div></section>";
   }
   function ledger(c) {
