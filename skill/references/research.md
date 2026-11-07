@@ -19,3 +19,10 @@ Fetch, in this order, and stop when you have enough:
 Record the stage (idea, pre-launch, beta, live) and the date you read each page; pages change. If something looks broken on their site, do not put it on the page. Tell the user privately instead and let them decide whether to raise it.
 
 If a fetch is blocked or empty, say so and ask the user to paste the text rather than guessing.
+
+## Pulling the candidate's own visual work
+
+- Portfolio sites: read local image files for exact pixel sizes (`w` and `h`).
+- Behance: plain fetches and `curl` get a 403 on project pages. The profile page lists project covers (`.../projects/404/...`, which are cropped covers; swap `404` for `808` for a bigger version). To get the full-size project images, open the project page in a real browser session (for example Playwright with a normal user agent), scroll, and read the `project_modules/max_1200` image URLs. Prefer full modules over covers, because covers are cropped and often cut text off.
+- A company's published brand guidelines page (logo, colour, type, voice) is strong evidence of a brand system: screenshot the sections.
+- Copy chosen images into the deploy project and reference them by `https` URL on your own host, so a third party cannot change or block them. List that host in `meta.allowHosts`.

@@ -60,7 +60,9 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
   //                     "with": "who it is with", "deliver": "what they would have", "decision": "a call from them",
   //                     "hours": { "listen": 20, "design": 25, "eng": 3, "mkt": 2 } } ],     // hours per segment; the page totals them
   //     "next": { "label": "Days 91 to 270", "intro": "…", "horizons": [ { "days": "Days 91 to 150", "short": "…", "title": "…", "items": ["…"], "decision": "…" } ] } } }
-  "creative": { "label": "05 · Marketing and launch creative", "nav": "Marketing work", "title": "…", "intro": "…", "items": [ { "src": "https://…", "alt": "…", "caption": "…" } ] },
+  "creative": { "label": "05 — Brand and launch work", "nav": "Marketing work", "title": "…", "intro": "Tap any piece to see it larger.",
+                "kinds": { "system": "Brand systems", "identity": "Identity", "launch": "Launch pages", "product": "Brand with product" },   // optional chip labels
+                "items": [ { "src": "https://…", "alt": "…", "caption": "…", "kind": "identity", "w": 1200, "h": 675 } ] },   // a masonry wall with filter chips and a lightbox; nothing is cropped
   "ask":      { "label": "06 · What I would like to learn from you", "title": "…", "intro": "…", "items": [ { "q": "Question", "why": "Why the answer changes the design." } ] },
   "close":    { "label": "07 · The short version", "nav": "Why me", "headline": "…", "reasons": [ { "title": "…", "text": "…" } ],
                 "ctas": [ { "label": "Reply", "href": "mailto:…" }, { "label": "Book a call", "href": "https://…" } ], "signoff": "…" },
