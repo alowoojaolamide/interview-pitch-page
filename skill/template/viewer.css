@@ -71,6 +71,7 @@ section{position:relative;padding:clamp(80px,10vw,152px) var(--gutter)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero-portrait img{filter:grayscale(1) brightness(1.1);opacity:.2}}
 @media (min-width:768px){.hero-portrait{width:52%;height:92%}.hero-portrait img{left:auto;right:-6vw;transform:none;opacity:1}
   :root[data-theme="dark"] .hero-portrait img{opacity:.55}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero-portrait img{opacity:.55}}}
+.hero .wrap{width:100%}
 .hero .eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:10px 22px;margin-bottom:clamp(20px,3vw,36px)} .hero .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:none}
 .hero .label{color:var(--ink)} .hero h1{max-width:100%}
 @media (min-width:768px){.hero h1{max-width:12.5ch}}
