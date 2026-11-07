@@ -132,32 +132,26 @@
     var segs = t.segments || [], tot = { listen: 0, design: 0, eng: 0, mkt: 0 }, all = 0;
     segs.forEach(function (g) { HRS.forEach(function (h) { var v = +((g.hours || {})[h[0]] || 0); tot[h[0]] += v; all += v; }); });
     var pct = all ? Math.round((tot.design / all) * 100) : 0;
-    var first = '<div class="tl-view" data-view="first" id="tl-first" role="tabpanel" aria-labelledby="tl-tab-first">' +
-      (t.rhythm ? '<p class="tl-note">' + md(t.rhythm) + "</p>" : "") +
-      (t.phases ? bandRow(t.phases, "pace") : "") + (t.months ? bandRow(t.months, "months") : "") +
-      '<div class="tl-rail" role="group" aria-label="Choose a stretch of weeks" data-lenis-prevent>' + segs.map(function (g, i) {
-        return '<button type="button" class="tl-seg" data-i="' + i + '" data-from="' + +g.from + '" data-to="' + +g.to + '" aria-pressed="' + (i === 0) + '"><b>' + esc(g.weeks) + "</b><span>" + esc(g.short || g.title) + "</span></button>";
-      }).join("") + "</div>" +
-      '<div class="tl-panels" aria-live="polite">' + segs.map(function (g, i) {
-        var max = 0; HRS.forEach(function (h) { max += +((g.hours || {})[h[0]] || 0); });
-        return '<article class="tl-panel"' + (i ? " hidden" : "") + ' data-panel="' + i + '"><p class="label">' + esc(g.weeks) + (g.phase ? " — " + esc(g.phase) : "") + "</p><h3>" + esc(g.title) + '</h3><div class="tl-cols"><div>' + ul(g.items) +
-          dl([["Working with", g.with], ["You would have", g.deliver], ["A call from you", g.decision]]) + '</div><div class="tl-hours"><p class="label">Where the ' + max + " hours go</p>" +
-          HRS.map(function (h) { var v = +((g.hours || {})[h[0]] || 0); return '<div class="tl-hr"><span>' + esc(h[1]) + '</span><i style="--w:' + (max ? Math.round((v / max) * 100) : 0) + '%"></i><b>' + v + "</b></div>"; }).join("") + "</div></div></article>";
-      }).join("") + "</div>" +
-      (all ? '<p class="tl-total">' + all + " hours in all: " + HRS.map(function (h) { return tot[h[0]] + " " + h[1].toLowerCase(); }).join(", ") + ". About " + pct + "% is design.</p>" : "") + "</div>";
-    var nx = t.next, next = "";
-    if (nx) {
-      var hz = nx.horizons || [];
-      next = '<div class="tl-view" data-view="next" id="tl-next" role="tabpanel" aria-labelledby="tl-tab-next" hidden>' + (nx.intro ? '<p class="tl-note">' + md(nx.intro) + "</p>" : "") +
-        '<div class="tl-rail" role="group" aria-label="Choose a stretch of days" data-lenis-prevent>' + hz.map(function (g, i) {
-          return '<button type="button" class="tl-seg" data-i="' + i + '" aria-pressed="' + (i === 0) + '"><b>' + esc(g.days) + "</b><span>" + esc(g.short || g.title) + "</span></button>";
-        }).join("") + "</div>" +
-        '<div class="tl-panels" aria-live="polite">' + hz.map(function (g, i) {
-          return '<article class="tl-panel"' + (i ? " hidden" : "") + ' data-panel="' + i + '"><p class="label">' + esc(g.days) + "</p><h3>" + esc(g.title) + '</h3><div class="tl-cols one"><div>' + ul(g.items) + dl([["A call from you", g.decision]]) + "</div></div></article>";
-        }).join("") + "</div></div>";
-    }
-    return '<div class="tl" data-tl>' + (nx ? '<div class="tl-tabs" role="tablist" aria-label="Plan horizon"><button type="button" role="tab" id="tl-tab-first" aria-selected="true" aria-controls="tl-first" data-tab="first">' + esc(t.firstLabel || "First 90 days") +
-      '</button><button type="button" role="tab" id="tl-tab-next" aria-selected="false" aria-controls="tl-next" data-tab="next">' + esc(nx.label || "Next 180 days") + "</button></div>" : "") + first + next + "</div>";
+    var total = all ? all + " hours in all, about " + pct + "% design" : "";
+    var nx = t.next, hz = nx ? (nx.horizons || []) : [];
+    function rail(items, label, mk) { return '<div class="tl-rail" role="group" aria-label="' + esc(label) + '" data-lenis-prevent>' + items.map(mk).join("") + "</div>"; }
+    var ctlFirst = '<div class="tl-ctl" data-view="first">' + (t.phases ? bandRow(t.phases, "pace") : "") + (t.months ? bandRow(t.months, "months") : "") +
+      rail(segs, "Choose a stretch of weeks", function (g, i) { return '<button type="button" class="tl-seg" data-i="' + i + '" data-from="' + +g.from + '" data-to="' + +g.to + '" aria-pressed="' + (i === 0) + '"><b>' + esc(g.weeks) + "</b><span>" + esc(g.short || g.title) + "</span></button>"; }) + "</div>";
+    var ctlNext = nx ? '<div class="tl-ctl" data-view="next" hidden>' +
+      rail(hz, "Choose a stretch of days", function (g, i) { return '<button type="button" class="tl-seg" data-i="' + i + '" aria-pressed="' + (i === 0) + '"><b>' + esc(g.days) + "</b><span>" + esc(g.short || g.title) + "</span></button>"; }) + "</div>" : "";
+    var panFirst = '<div class="tl-pan" data-view="first" id="tl-first" role="tabpanel" aria-labelledby="tl-tab-first"><div class="tl-panels" aria-live="polite">' + segs.map(function (g, i) {
+      var max = 0; HRS.forEach(function (h) { max += +((g.hours || {})[h[0]] || 0); });
+      return '<article class="tl-panel"' + (i ? " hidden" : "") + ' data-panel="' + i + '"><p class="label">' + esc(g.weeks) + (g.phase ? " — " + esc(g.phase) : "") + "</p><h3>" + esc(g.title) + '</h3><div class="tl-cols"><div class="tl-what">' + ul(g.items) + "</div>" +
+        dl([["Working with", g.with], ["You would have", g.deliver], ["A call from you", g.decision]]) + '<div class="tl-hours"><p class="label">Where the ' + max + " hours go</p>" +
+        HRS.map(function (h) { var v = +((g.hours || {})[h[0]] || 0); return '<div class="tl-hr"><span>' + esc(h[1]) + '</span><i style="--w:' + (max ? Math.round((v / max) * 100) : 0) + '%"></i><b>' + v + "</b></div>"; }).join("") +
+        (total ? '<p class="tl-total">' + esc(total) + "</p>" : "") + "</div></div></article>";
+    }).join("") + "</div></div>";
+    var panNext = nx ? '<div class="tl-pan" data-view="next" id="tl-next" role="tabpanel" aria-labelledby="tl-tab-next" hidden>' + (nx.intro ? '<p class="tl-note" style="margin-top:16px">' + md(nx.intro) + "</p>" : "") + '<div class="tl-panels" aria-live="polite">' + hz.map(function (g, i) {
+      return '<article class="tl-panel"' + (i ? " hidden" : "") + ' data-panel="' + i + '"><p class="label">' + esc(g.days) + "</p><h3>" + esc(g.title) + '</h3><div class="tl-cols two"><div class="tl-what">' + ul(g.items) + "</div>" + dl([["A call from you", g.decision]]) + "</div></article>";
+    }).join("") + "</div></div>" : "";
+    var tabs = nx ? '<div class="tl-tabs" role="tablist" aria-label="Plan horizon"><button type="button" role="tab" id="tl-tab-first" aria-selected="true" aria-controls="tl-first" data-tab="first">' + esc(t.firstLabel || "First 90 days") +
+      '</button><button type="button" role="tab" id="tl-tab-next" aria-selected="false" aria-controls="tl-next" data-tab="next">' + esc(nx.label || "Next 180 days") + "</button></div>" : "";
+    return '<div class="tl" data-tl><div class="tl-controls"><div class="tl-top">' + tabs + (t.rhythm ? '<p class="tl-hint">' + md(t.rhythm) + "</p>" : "") + "</div>" + ctlFirst + ctlNext + "</div>" + panFirst + panNext + "</div>";
   }
   function plan(c) {
     var s = c.plan; if (!s) return ""; NAV.push(["plan", s.nav || "90 days"]);
@@ -269,24 +263,33 @@
         });
       });
     }
+    $$('a[href^="#"]').forEach(function (a) { a.addEventListener("click", function (e) { var t = $(a.getAttribute("href")); if (t) { e.preventDefault(); jump(t); } }); });
     var tlRoot = $("[data-tl]");
     if (tlRoot) {
+      function pair(view) { return { ctl: $('.tl-ctl[data-view="' + view + '"]', tlRoot), pan: $('.tl-pan[data-view="' + view + '"]', tlRoot) }; }
+      // Keep the section the same height on every tab so nothing jumps: measure the tallest panel once.
+      function fit() {
+        tlRoot.classList.add("measure"); var max = 0;
+        $$(".tl-panel", tlRoot).forEach(function (p) { if (p.offsetHeight > max) max = p.offsetHeight; });
+        tlRoot.classList.remove("measure"); tlRoot.style.setProperty("--tlh", max + "px");
+      }
       $$("[data-tab]", tlRoot).forEach(function (tb) {
         tb.addEventListener("click", function () {
+          var v = tb.getAttribute("data-tab");
           $$("[data-tab]", tlRoot).forEach(function (x) { x.setAttribute("aria-selected", x === tb ? "true" : "false"); });
-          $$(".tl-view", tlRoot).forEach(function (v) { v.hidden = v.getAttribute("data-view") !== tb.getAttribute("data-tab"); });
-          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+          ["first", "next"].forEach(function (k) { var pr = pair(k); if (pr.ctl) pr.ctl.hidden = k !== v; if (pr.pan) pr.pan.hidden = k !== v; });
         });
       });
-      $$(".tl-view", tlRoot).forEach(function (view) {
-        var segs = $$(".tl-seg", view), panels = $$(".tl-panel", view), bands = $$(".tl-band", view);
+      ["first", "next"].forEach(function (view) {
+        var pr = pair(view); if (!pr.ctl || !pr.pan) return;
+        var segs = $$(".tl-seg", pr.ctl), panels = $$(".tl-panel", pr.pan), bands = $$(".tl-band", pr.ctl);
         function pick(i, focus) {
           segs.forEach(function (b, k) { b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
           panels.forEach(function (p, k) { p.hidden = k !== i; });
           var f = +segs[i].getAttribute("data-from"), t = +segs[i].getAttribute("data-to");
           bands.forEach(function (bd) { var on = f && +bd.getAttribute("data-from") <= t && +bd.getAttribute("data-to") >= f; bd.classList.toggle("on", !!on); });
           if (focus) segs[i].focus();
-          segs[i].scrollIntoView && segs[i].scrollIntoView({ block: "nearest", inline: "nearest" });
+          var rail = segs[i].parentElement; if (rail && rail.scrollWidth > rail.clientWidth) rail.scrollLeft = segs[i].offsetLeft - 16;
         }
         segs.forEach(function (b, i) {
           b.addEventListener("click", function () { pick(i, false); });
@@ -300,6 +303,8 @@
         });
         if (segs.length) pick(0, false);
       });
+      fit(); var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(fit, 150); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
     }
     var tg = $(".toggle");
     if (tg) tg.addEventListener("click", function () {
@@ -321,6 +326,30 @@
   }
 
   /* ---------- motion (loaded after unlock; the page is complete without it) ---------- */
+  var lenisRef = null, userAt = 0;
+  ["wheel", "touchstart", "keydown"].forEach(function (ev) { window.addEventListener(ev, function () { userAt = Date.now(); }, { passive: true }); });
+  function scrollToY(y, offset) {
+    if (lenisRef) lenisRef.scrollTo(y, { offset: offset || 0 });
+    else window.scrollTo({ top: typeof y === "number" ? y : Math.max(0, y.getBoundingClientRect().top + window.pageYOffset + (offset || 0)), behavior: "smooth" });
+  }
+  // Works before the smooth-scroll library has loaded, and re-checks the landing because fonts and images may still be settling.
+  function jump(t) {
+    var startAt = Date.now(), y0 = landing(t), isEl = y0 === t;
+    scrollToY(y0, isEl ? -70 : 0);
+    function recheck() {
+      if (userAt > startAt) return;
+      var y2 = landing(t), off = isEl ? t.getBoundingClientRect().top - 70 : window.pageYOffset - y2;
+      if (Math.abs(off) > 6) scrollToY(y2, isEl ? -70 : 0);
+    }
+    [1400, 2800, 5000].forEach(function (ms) { setTimeout(recheck, ms); });
+    if (document.fonts && document.fonts.status !== "loaded" && document.fonts.ready) document.fonts.ready.then(function () { setTimeout(recheck, 250); });
+  }
+  // Jumping to a section that holds the interactive plan lands with its controls pinned, so the panel is in view without scrolling.
+  function landing(t) {
+    var tl = t.querySelector && t.querySelector("[data-tl]");
+    if (!tl) return t;
+    return Math.max(0, Math.round(tl.getBoundingClientRect().top + window.pageYOffset - (window.innerWidth <= 900 ? 76 : 84)));
+  }
   function load(src) { return new Promise(function (ok, no) { var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; s.crossOrigin = "anonymous"; document.head.appendChild(s); }); }
   function motion() {
     if (reduce) { $$("[data-count]").forEach(function (n) { n.textContent = n.getAttribute("data-count"); }); return; }
@@ -335,7 +364,7 @@
     if (window.Lenis) {
       var lenis = new window.Lenis({ lerp: 0.1, wheelMultiplier: 0.95 });
       lenis.on("scroll", ST.update); gsap.ticker.add(function (t) { lenis.raf(t * 1000); }); gsap.ticker.lagSmoothing(0);
-      $$('a[href^="#"]').forEach(function (a) { a.addEventListener("click", function (e) { var t = $(a.getAttribute("href")); if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -70 }); } }); });
+      lenisRef = lenis;
     }
     gsap.from("#hero-h .w>span", { yPercent: 115, duration: 1.1, ease: "power4.out", stagger: 0.07, delay: 0.15 });
     $$(".rule").forEach(function (r) { gsap.to(r, { scaleX: 1, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: r, start: "top 92%", once: true } }); });

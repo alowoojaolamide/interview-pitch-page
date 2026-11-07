@@ -63,6 +63,7 @@ const hosts = new Set([profile.assets_base, ...((content.meta && content.meta.al
       try { const u = new URL(v.src); if (u.protocol !== "https:") fails.push(`image is not https: ${v.src}`); else if (hosts.size && !hosts.has(u.host)) warns.push(`image host not in allowlist: ${u.host}`); }
       catch { fails.push(`bad image url: ${v.src}`); }
       if (!v.alt) warns.push(`image without alt text: ${v.src}`);
+      if (!v.w || !v.h) warns.push(`image without w and h (the page will jump as it loads, which breaks nav jumps): ${v.src}`);
     }
     Object.values(v).forEach(imgs);
   }

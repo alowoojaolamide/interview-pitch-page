@@ -34,7 +34,7 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
   "story":   { "label": "02 · The proof", "nav": "The proof", "title": "…", "intro": "…", "big": "Project", "project": "My role", "meta": "dates and scope",
                "chapters": [ { "label": "The problem", "nav": "The problem", "title": "…", "body": ["paragraph", "paragraph"],
                                "bullets": ["Optional list shown under the body, e.g. closing habits"],
-                               "image": { "src": "https://…", "alt": "…", "caption": "…" },   // one wide screenshot
+                               "image": { "src": "https://…", "alt": "…", "caption": "…", "w": 1725, "h": 904 },   // one wide screenshot; ALWAYS give w and h (pixels) so space is reserved before it loads
                                "images": [ { "src": "https://…", "alt": "…", "caption": "short" } ],   // OR two to three phone screens side by side (scroll-snaps on small screens)
                                "stat": { "value": "214", "label": "what it counts, with source and date" },
                                "tags": ["public", "measured", "design", "judgement"] } ] },
@@ -85,3 +85,7 @@ Weeks, days and hours in a forward plan are proposals, not claims about the past
 ## The needs map (use it for live presentations)
 
 When a ledger has more than about eight rows, give every row a `strength`, a `didShort` and a `willShort`. The page then shows an at-a-glance map: a status bar, a grid of tiles, and one panel with the short lines (tap or use arrow keys to move). The full table stays behind a "Full detail" toggle for reading afterwards. Status is shown by shape and text as well as colour (filled, half, dashed). Mark a row `partial` when the evidence covers only part of the need, and `gap` when there is none; always say why in `statusNote`.
+
+## Images need their size
+
+Give every image `w` and `h` (its pixel size). Images load lazily; without a reserved size the page grows as they arrive, and navigation jumps can land short of their target.
