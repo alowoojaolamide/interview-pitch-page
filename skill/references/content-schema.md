@@ -44,7 +44,10 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
                "rows": [ { "theme": "Product", "ask": "Short topic title in the candidate's words", "project": "Project names",
                            "label": "public | measured | design | judgement",   // omit when gap is true
                            "gap": false,                                       // true = honest gap row
-                           "did": "Concrete evidence.", "will": "Concrete deliverable and timing." } ] },   // no per-row disclaimers
+                           "did": "Concrete evidence.", "will": "Concrete deliverable and timing.",   // long text, shown under "Full detail"
+                           "strength": "done | partial | gap",                // adds the row to the interactive needs map
+                           "didShort": "About 15 words.", "willShort": "About 15 words.",   // what the map panel shows
+                           "statusNote": "Partly: why. / Gap: what." } ] },   // required for partial and gap; no per-row disclaimers
 
   "plan":    { "label": "04 · Your first 90 days", "nav": "90 days", "title": "…", "intro": "…",
                "phases": [ { "label": "Month 1 · Foundation", "title": "…", "items": ["…"], "deliver": "What they would have." } ],
@@ -78,3 +81,7 @@ Pull fonts, colours, radius and tone from the candidate's portfolio or site, and
 ## Planning numbers
 
 Weeks, days and hours in a forward plan are proposals, not claims about the past. List the ones that appear in text under `meta.allowNumbers` (hours inside `timeline.segments[].hours` are numbers, not text, so the checker does not see them). **The hours must add up to what the role allows**; if the posting says 100 hours a month, the three months must total no more than 300.
+
+## The needs map (use it for live presentations)
+
+When a ledger has more than about eight rows, give every row a `strength`, a `didShort` and a `willShort`. The page then shows an at-a-glance map: a status bar, a grid of tiles, and one panel with the short lines (tap or use arrow keys to move). The full table stays behind a "Full detail" toggle for reading afterwards. Status is shown by shape and text as well as colour (filled, half, dashed). Mark a row `partial` when the evidence covers only part of the need, and `gap` when there is none; always say why in `statusNote`.

@@ -69,6 +69,14 @@ const hosts = new Set([profile.assets_base, ...((content.meta && content.meta.al
 })(content);
 
 const LABELS = ["public", "measured", "design", "judgement"];
+const STRENGTH = ["done", "partial", "gap"];
+const words = (t) => (t || "").trim().split(/\s+/).filter(Boolean).length;
+for (const r of (content.ledger && content.ledger.rows) || []) {
+  if (r.strength && !STRENGTH.includes(r.strength)) fails.push(`row strength must be done, partial or gap: ${r.ask.slice(0, 60)}`);
+  if (r.strength && r.strength !== "done" && !r.statusNote) warns.push(`row marked ${r.strength} should say why in statusNote: ${r.ask.slice(0, 60)}`);
+  if (r.strength && (!r.didShort || !r.willShort)) warns.push(`needs-map row has no didShort/willShort (the page falls back to the long text): ${r.ask.slice(0, 60)}`);
+  for (const k of ["didShort", "willShort"]) if (words(r[k]) > 20) warns.push(`${k} is ${words(r[k])} words; keep the on-screen line to about 15: ${r.ask.slice(0, 60)}`);
+}
 for (const r of (content.ledger && content.ledger.rows) || []) {
   if (r.gap && r.label) fails.push(`honest-gap row must not carry an evidence label: ${r.ask.slice(0, 60)}`);
   if (!r.gap && !LABELS.includes(r.label)) fails.push(`ledger row needs a label (${LABELS.join("/")}) or gap:true: ${r.ask.slice(0, 60)}`);

@@ -80,20 +80,42 @@
           (x.image ? img(x.image, "par") : "") + (x.images ? '<div class="phones" data-lenis-prevent>' + x.images.map(function (i) { return img(i, "phone"); }).join("") + "</div>" : "") + '<div class="tags">' + (x.tags || []).map(tag).join("") + "</div></article>";
       }).join("") + "</div></div></div></section>";
   }
-  function ledger(c) {
-    var s = c.ledger; if (!s) return ""; NAV.push(["ledger", s.nav || "Your list"]);
-    var cols = s.cols && s.cols.length === 3 ? s.cols : ["The need", "What I have done", "What I would do"];
+  function ledgerTable(s, cols) {
     var themes = []; (s.rows || []).forEach(function (r) { if (r.theme && themes.indexOf(r.theme) < 0) themes.push(r.theme); });
-    return '<section id="ledger"><div class="wrap">' + head(s.label || "03 Your list, answered", s.title, s.intro) +
-      '<div class="filters" role="group" aria-label="Filter by theme"><button type="button" aria-pressed="true" data-f="">All</button>' + themes.map(function (t) { return '<button type="button" aria-pressed="false" data-f="' + esc(t) + '">' + esc(t) + "</button>"; }).join("") + "</div>" +
+    return '<div class="filters" role="group" aria-label="Filter by theme"><button type="button" aria-pressed="true" data-f="">All</button>' + themes.map(function (t) { return '<button type="button" aria-pressed="false" data-f="' + esc(t) + '">' + esc(t) + "</button>"; }).join("") + "</div>" +
       '<div class="led-head label" aria-hidden="true"><span>' + esc(cols[0]) + "</span><span>" + esc(cols[1]) + "</span><span>" + esc(cols[2]) + "</span></div>" +
       (s.rows || []).map(function (r) {
         var gap = r.gap;
-        return '<article class="led-row" data-theme="' + esc(r.theme || "") + '" data-r><div><div class="led-col-label">' + esc(cols[0]) + '</div><p class="ask">' + md(r.ask) + "</p></div>" +
+        return '<article class="led-row" data-theme="' + esc(r.theme || "") + '"><div><div class="led-col-label">' + esc(cols[0]) + '</div><p class="ask">' + md(r.ask) + "</p></div>" +
           '<div><div class="led-col-label">' + esc(cols[1]) + '</div><div class="who">' + (r.project ? '<span class="tag">' + esc(r.project) + "</span>" : "") + tag(gap ? "gap" : r.label) + "</div>" + paras(r.did) + "</div>" +
           '<div class="will"><div class="led-col-label">' + esc(cols[2]) + "</div>" + paras(r.will) + "</div></article>";
-      }).join("") + "</div></section>";
+      }).join("");
   }
+  var ST = { done: "Done", partial: "Partly", gap: "Honest gap" };
+  function ledger(c) {
+    var s = c.ledger; if (!s) return ""; NAV.push(["ledger", s.nav || "How I'd work"]);
+    var cols = s.cols && s.cols.length === 3 ? s.cols : ["The need", "What I have done", "What I would do"];
+    var rows = s.rows || [], mapped = rows.some(function (r) { return r.strength; });
+    if (!mapped) return '<section id="ledger"><div class="wrap">' + head(s.label || "03 — How I would work", s.title, s.intro) + ledgerTable(s, cols) + "</div></section>";
+    var n = { done: 0, partial: 0, gap: 0 };
+    rows.forEach(function (r) { n[r.strength === "gap" || r.gap ? "gap" : r.strength === "partial" ? "partial" : "done"]++; });
+    function st(r) { return r.strength === "gap" || r.gap ? "gap" : r.strength === "partial" ? "partial" : "done"; }
+    return '<section id="ledger"><div class="wrap">' + head(s.label || "03 — How I would work", s.title, s.intro) +
+      '<div class="map" data-map><div class="map-sum"><div class="map-bar" aria-hidden="true"><i class="s-done" style="flex:' + n.done + '"></i><i class="s-partial" style="flex:' + n.partial + '"></i><i class="s-gap" style="flex:' + n.gap + '"></i></div>' +
+      '<div class="map-legend" role="group" aria-label="Highlight by status"><button type="button" data-s="" aria-pressed="true">All ' + rows.length + "</button>" +
+      ["done", "partial", "gap"].map(function (k) { return n[k] ? '<button type="button" data-s="' + k + '" aria-pressed="false"><span class="dot s-' + k + '" aria-hidden="true"></span><b>' + n[k] + "</b> " + (k === "partial" ? "partly" : k === "gap" ? "honest gap" : "done") + "</button>" : ""; }).join("") + "</div></div>" +
+      '<div class="map-body"><div class="map-grid" role="group" aria-label="Role needs">' + rows.map(function (r, i) {
+        return '<button type="button" class="tile" data-i="' + i + '" data-s="' + st(r) + '" aria-pressed="' + (i === 0) + '"><span class="dot s-' + st(r) + '" aria-hidden="true"></span><span class="t">' + esc(r.ask) + '</span><span class="stt">' + ST[st(r)] + "</span></button>";
+      }).join("") + '</div><aside class="map-panel" aria-live="polite">' + rows.map(function (r, i) {
+        var k = st(r);
+        return '<article class="mp"' + (i ? " hidden" : "") + ' data-p="' + i + '"><div class="mp-top"><span class="label">' + ("0" + (i + 1)).slice(-2) + " / " + ("0" + rows.length).slice(-2) + '</span><span class="chip s-' + k + '"><span class="dot s-' + k + '" aria-hidden="true"></span>' + ST[k] + "</span></div><h3>" + esc(r.ask) + "</h3>" +
+          (r.project ? '<div class="who"><span class="tag">' + esc(r.project) + "</span></div>" : "") +
+          (r.statusNote ? '<p class="mp-note">' + md(r.statusNote) + "</p>" : "") +
+          '<div class="mp-blk"><span class="label">' + esc(cols[1]) + "</span><p>" + md(r.didShort || r.did) + '</p></div><div class="mp-blk will"><span class="label">' + esc(cols[2]) + "</span><p>" + md(r.willShort || r.will) + "</p></div></article>";
+      }).join("") + '<div class="mp-nav"><button type="button" data-d="-1" aria-label="Previous need">&larr;</button><button type="button" data-d="1" aria-label="Next need">&rarr;</button></div></aside></div></div>' +
+      '<details class="led-full"><summary>Full detail</summary>' + ledgerTable(s, cols) + "</details></div></section>";
+  }
+
   /* ---------- plan: either static phases or an interactive timeline ---------- */
   var HRS = [["listen", "Listening and defining"], ["design", "Design"], ["eng", "With engineering"], ["mkt", "Marketing and launch"]];
   function ul(a) { return "<ul>" + (a || []).map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>"; }
@@ -220,6 +242,33 @@
         if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       });
     });
+    var mapRoot = $("[data-map]");
+    if (mapRoot) {
+      var tiles = $$(".tile", mapRoot), mps = $$(".mp", mapRoot), cur = 0;
+      function choose(i, focus) {
+        cur = (i + tiles.length) % tiles.length;
+        tiles.forEach(function (t, k) { t.setAttribute("aria-pressed", k === cur ? "true" : "false"); });
+        mps.forEach(function (p, k) { p.hidden = k !== cur; });
+        if (focus) tiles[cur].focus();
+      }
+      tiles.forEach(function (t, i) {
+        t.addEventListener("click", function () { choose(i, false); });
+        t.addEventListener("keydown", function (e) {
+          var k = e.key, cols = Math.max(1, Math.round(mapRoot.querySelector(".map-grid").clientWidth / t.offsetWidth)), n = null;
+          if (k === "ArrowRight") n = i + 1; else if (k === "ArrowLeft") n = i - 1; else if (k === "ArrowDown") n = i + cols; else if (k === "ArrowUp") n = i - cols; else return;
+          if (n < 0 || n >= tiles.length) return; e.preventDefault(); choose(n, true);
+        });
+      });
+      $$(".mp-nav button", mapRoot).forEach(function (b) { b.addEventListener("click", function () { choose(cur + +b.getAttribute("data-d"), false); }); });
+      $$(".map-legend button", mapRoot).forEach(function (b) {
+        b.addEventListener("click", function () {
+          var f = b.getAttribute("data-s");
+          $$(".map-legend button", mapRoot).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+          tiles.forEach(function (t) { t.classList.toggle("dim", !!f && t.getAttribute("data-s") !== f); });
+          if (f) { var first = tiles.findIndex(function (t) { return t.getAttribute("data-s") === f; }); if (first > -1) choose(first, false); }
+        });
+      });
+    }
     var tlRoot = $("[data-tl]");
     if (tlRoot) {
       $$("[data-tab]", tlRoot).forEach(function (tb) {
