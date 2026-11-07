@@ -34,20 +34,25 @@ cp -R interview-pitch-skill/skill ~/.claude/skills/interview-pitch-page
 
 Then ask your agent: *"I have an interview with Acme on Tuesday, here is the job description…"* The skill walks through intake, research, evidence matching, QA, build and deploy.
 
-## Try the example
+## Quick start
 
 ```bash
-cd skill/examples
-node ../scripts/verify_claims.mjs --content acme/content.json --profile profile.example.json --research research.example.json
-PITCH_PASSWORD='example-pass' node ../scripts/build.mjs --content acme/content.json --out /tmp/pp --exact-slug
-python3 -m http.server 8000 --directory /tmp/pp   # open http://localhost:8000/acme/
+node skill/scripts/init_workspace.mjs ~/pitch                       # once: private workspace
+node skill/scripts/new_page.mjs --workspace ~/pitch --slug acme     # per interview: starts from a full example
+node skill/scripts/verify_claims.mjs --content ~/pitch/pages/acme/content.json --profile ~/pitch/profile.json --research ~/pitch/research/acme.json
+PITCH_PASSWORD='example-pass' node skill/scripts/build.mjs --content ~/pitch/pages/acme/content.json --out ~/pitch/pitch-pages --exact-slug
+python3 -m http.server 8000 --directory ~/pitch/pitch-pages &
+python3 skill/scripts/smoke_test.py http://localhost:8000/acme/ --password 'example-pass'   # pip install playwright first
 ```
+Deploy, hand-over and revocation are in `skill/references/deploy.md`.
 
 ## Layout
 
 ```
 skill/SKILL.md            the workflow the agent follows
+skill/scripts/init_workspace.mjs, new_page.mjs   scaffold the private workspace and a new page
 skill/scripts/build.mjs   encrypt and assemble a page; revoke; clean expired
+skill/scripts/smoke_test.py   end-to-end check of a built page (optional, needs Playwright)
 skill/scripts/verify_claims.mjs   the honesty gate
 skill/template/           viewer shell, styles and renderer (no framework)
 skill/references/         content schema, profile format, research checklist

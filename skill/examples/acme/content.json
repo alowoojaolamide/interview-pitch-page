@@ -12,10 +12,34 @@
     },
     "allowNumbers": [
       "1",
+      "10",
+      "11",
+      "12",
+      "13",
+      "150",
+      "151",
+      "180",
       "2",
+      "20",
+      "200",
+      "2012",
+      "210",
+      "211",
+      "24",
+      "270",
+      "28",
       "3",
+      "30",
+      "4",
+      "40",
+      "5",
+      "50",
       "6",
-      "2012"
+      "7",
+      "8",
+      "9",
+      "90",
+      "91"
     ]
   },
   "theme": {
@@ -73,9 +97,11 @@
           "Most habit apps remind people on the app’s schedule. Orbit lets the user choose."
         ],
         "image": {
-          "src": "https://example.com/orbit-home.webp",
-          "alt": "Orbit home screen",
-          "caption": "Home."
+          "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY3NSIgdmlld0JveD0iMCAwIDEyMDAgNjc1Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjM2E1NmU4Ii8+PHRleHQgeD0iNjAiIHk9IjYxNSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmZmZmIj5PcmJpdCBob21lPC90ZXh0Pjwvc3ZnPg==",
+          "alt": "Orbit home screen placeholder",
+          "caption": "Home.",
+          "w": 1200,
+          "h": 675
         },
         "tags": [
           "design"
@@ -106,24 +132,69 @@
         "ask": "Owning the experience",
         "project": "Orbit",
         "label": "public",
+        "strength": "done",
         "did": "Founded and designed Orbit from first sketch to a public launch in two cities.",
-        "will": "One journey map in week 1 and a clickable prototype in week 3."
+        "will": "One journey map in week 1 and a clickable prototype in week 3.",
+        "didShort": "Founded and designed Orbit from sketch to a public launch in two cities.",
+        "willShort": "One journey map in week 1, a prototype in week 3."
       },
       {
         "theme": "Systems",
         "ask": "A component library",
         "project": "Fieldwork",
         "label": "design",
+        "strength": "done",
         "did": "Designed a component library of 40 components for a field-service tool.",
-        "will": "Tokens and a core set in the first two weeks."
+        "will": "Tokens and a core set in the first two weeks.",
+        "didShort": "A 40-component library for a field-service tool, handed over with acceptance criteria.",
+        "willShort": "Tokens and a core set in the first two weeks."
+      },
+      {
+        "theme": "Research",
+        "ask": "Research and testing",
+        "project": "Orbit",
+        "label": "design",
+        "strength": "partial",
+        "statusNote": "Partly: audits and interviews yes, no formal usability lab.",
+        "did": "Interviews and a reminder-timing audit before any screen.",
+        "will": "Five short sessions in month 2.",
+        "didShort": "Interviews and a reminder-timing audit before any screen.",
+        "willShort": "Five short sessions in month 2."
+      },
+      {
+        "theme": "Handoff",
+        "ask": "Handoff and QA",
+        "project": "Fieldwork",
+        "label": "design",
+        "strength": "done",
+        "did": "Specs with acceptance criteria for every screen.",
+        "will": "Weekly design QA against the build.",
+        "didShort": "Specs with acceptance criteria for every screen.",
+        "willShort": "Weekly design QA against the build."
+      },
+      {
+        "theme": "Marketing",
+        "ask": "Launch pages",
+        "project": "Orbit",
+        "label": "public",
+        "strength": "partial",
+        "statusNote": "Partly: a launch page yes, no email templates in the portfolio.",
+        "did": "Designed the Orbit launch page.",
+        "will": "One landing page and a welcome email template.",
+        "didShort": "Designed the Orbit launch page.",
+        "willShort": "A landing page and a welcome email template."
       },
       {
         "theme": "Trust",
         "ask": "Finance products",
         "project": "Orbit",
         "gap": true,
+        "strength": "gap",
+        "statusNote": "Gap: I have not shipped a finance product.",
         "did": "This is my honest gap: I have not shipped a finance product.",
-        "will": "A data map and a plain-language consent review before any screen."
+        "will": "A data map and a plain-language consent review before any screen.",
+        "didShort": "Closest: user-chosen reminders and clear consent in Orbit.",
+        "willShort": "A data map and consent review before any screen."
       }
     ],
     "label": "03 — How I would work",
@@ -135,34 +206,156 @@
     ]
   },
   "plan": {
+    "label": "04 — The first 90 days",
+    "nav": "90 days",
     "title": "The first three months, *what goes in each.*",
-    "intro": "Here is how I would spend them.",
-    "phases": [
+    "intro": "",
+    "timeline": {
+      "firstLabel": "First 90 days",
+      "rhythm": "A short diagnosis, a long build, then structure that lasts.",
+      "phases": [
+        {
+          "label": "Diagnose",
+          "from": 1,
+          "to": 2
+        },
+        {
+          "label": "Build",
+          "from": 3,
+          "to": 8
+        },
+        {
+          "label": "Structure",
+          "from": 9,
+          "to": 12
+        }
+      ],
+      "months": [
+        {
+          "label": "Month 1 — Discover",
+          "short": "Month 1",
+          "from": 1,
+          "to": 4
+        },
+        {
+          "label": "Month 2 — Build",
+          "short": "Month 2",
+          "from": 5,
+          "to": 8
+        },
+        {
+          "label": "Month 3 — Launch",
+          "short": "Month 3",
+          "from": 9,
+          "to": 12
+        }
+      ],
+      "segments": [
+        {
+          "weeks": "Weeks 1 to 4",
+          "from": 1,
+          "to": 4,
+          "phase": "Diagnose",
+          "short": "Listen and map",
+          "title": "Listen, then map.",
+          "items": [
+            "Read the brief and talk with the team.",
+            "Map the core journeys."
+          ],
+          "with": "You and engineering",
+          "deliver": "Journey maps and a first system",
+          "decision": "What is in the first release",
+          "hours": {
+            "listen": 30,
+            "design": 50,
+            "eng": 10,
+            "mkt": 10
+          }
+        },
+        {
+          "weeks": "Weeks 5 to 8",
+          "from": 5,
+          "to": 8,
+          "phase": "Build",
+          "short": "Prototype",
+          "title": "Prototype and hand off.",
+          "items": [
+            "Priority screens.",
+            "Specs for engineering."
+          ],
+          "with": "Engineering",
+          "deliver": "A tested prototype and specs",
+          "decision": "Which findings change the build",
+          "hours": {
+            "listen": 10,
+            "design": 50,
+            "eng": 25,
+            "mkt": 15
+          }
+        },
+        {
+          "weeks": "Weeks 9 to 12",
+          "from": 9,
+          "to": 12,
+          "phase": "Structure",
+          "short": "QA and launch",
+          "title": "QA, then launch.",
+          "items": [
+            "Design QA against the build."
+          ],
+          "with": "Engineering and marketing",
+          "deliver": "A QA-checked build",
+          "decision": "How a good first month is measured",
+          "hours": {
+            "listen": 5,
+            "design": 25,
+            "eng": 40,
+            "mkt": 30
+          }
+        }
+      ],
+      "next": {
+        "label": "Days 91 to 270",
+        "intro": "If the first 90 days go well, here is where I would point the next six months.",
+        "horizons": [
+          {
+            "days": "Days 91 to 150",
+            "short": "Launch",
+            "title": "Beta to launch.",
+            "items": [
+              "Tune from real use."
+            ],
+            "decision": "What launched means"
+          },
+          {
+            "days": "Days 151 to 210",
+            "short": "Learn",
+            "title": "Learn.",
+            "items": [
+              "Review the first signals."
+            ],
+            "decision": "What ships next"
+          },
+          {
+            "days": "Days 211 to 270",
+            "short": "Scale",
+            "title": "Scale the design.",
+            "items": [
+              "System version two."
+            ],
+            "decision": "Whether design grows"
+          }
+        ]
+      }
+    },
+    "rhythm": [
       {
-        "label": "Month 1 · Discover",
-        "title": "Listen and map.",
-        "items": [
-          "Read the brief and talk with the team.",
-          "Map the core journeys."
-        ],
-        "deliver": "Journey maps and a first system."
+        "title": "Overlap",
+        "text": "A daily window plus written updates."
       },
       {
-        "label": "Month 2 · Build",
-        "title": "Prototype and hand off.",
-        "items": [
-          "Priority screens.",
-          "Specs for engineering."
-        ],
-        "deliver": "A tested prototype and specs."
-      },
-      {
-        "label": "Month 3 · Launch",
-        "title": "QA and polish.",
-        "items": [
-          "Design QA against the build."
-        ],
-        "deliver": "A QA-checked build."
+        "title": "Rhythm",
+        "text": "A weekly written update and a Friday demo."
       }
     ],
     "foot": "I would tune all of this with you in week one."
@@ -209,5 +402,132 @@
     }
   ],
   "fine": "Built from public information only. Read the plans as opinions I would like to test with you.",
-  "sourcesLabel": "Sources"
+  "sourcesLabel": "Sources",
+  "creative": {
+    "label": "05 — Brand and launch work",
+    "nav": "Marketing work",
+    "title": "Brand and launch work, *from the same hands.*",
+    "intro": "Tap any piece to see it larger.",
+    "items": [
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY3NSIgdmlld0JveD0iMCAwIDEyMDAgNjc1Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjM2E1NmU4Ii8+PHRleHQgeD0iNjAiIHk9IjU4NSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmZmZmIj5PcmJpdDwvdGV4dD48dGV4dCB4PSI2MCIgeT0iNjM1IiBmb250LWZhbWlseT0iSGVsdmV0aWNhLEFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii43Ij48L3RleHQ+PC9zdmc+",
+        "alt": "Orbit launch page placeholder",
+        "caption": "Orbit: the launch page.",
+        "kind": "launch",
+        "w": 1200,
+        "h": 675
+      },
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY3NSIgdmlld0JveD0iMCAwIDEyMDAgNjc1Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTYxOTJiIi8+PHRleHQgeD0iNjAiIHk9IjU4NSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmZmZmIj5GaWVsZHdvcms8L3RleHQ+PHRleHQgeD0iNjAiIHk9IjYzNSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjI4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIuNyI+Y29tcG9uZW50IGxpYnJhcnk8L3RleHQ+PC9zdmc+",
+        "alt": "Fieldwork component library placeholder",
+        "caption": "Fieldwork: the component library.",
+        "kind": "system",
+        "w": 1200,
+        "h": 675
+      },
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjkwMCIgdmlld0JveD0iMCAwIDEyMDAgOTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjZmN2ZiIi8+PHRleHQgeD0iNjAiIHk9IjgxMCIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMTYxOTJiIj5PcmJpdCBtYXJrPC90ZXh0Pjx0ZXh0IHg9IjYwIiB5PSI4NjAiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EsQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzE2MTkyYiIgb3BhY2l0eT0iLjciPjwvdGV4dD48L3N2Zz4=",
+        "alt": "Orbit identity placeholder",
+        "caption": "Orbit: the mark.",
+        "kind": "identity",
+        "w": 1200,
+        "h": 900
+      },
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY3NSIgdmlld0JveD0iMCAwIDEyMDAgNjc1Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTAxMzI2Ii8+PHRleHQgeD0iNjAiIHk9IjU4NSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmZmZmIj5Ta2V0Y2hlczwvdGV4dD48dGV4dCB4PSI2MCIgeT0iNjM1IiBmb250LWZhbWlseT0iSGVsdmV0aWNhLEFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii43Ij48L3RleHQ+PC9zdmc+",
+        "alt": "Concept sketching placeholder",
+        "caption": "Orbit: concept sketching.",
+        "kind": "identity",
+        "w": 1200,
+        "h": 675
+      }
+    ]
+  },
+  "scope": {
+    "button": "Scope",
+    "label": "One page",
+    "title": "The first release, *in one page.*",
+    "intro": "Move a piece in or out and watch the hours.",
+    "budget": {
+      "hours": 200,
+      "weeks": 8,
+      "label": "Weeks 1 to 8"
+    },
+    "journey": [
+      {
+        "title": "Set",
+        "note": "Pick a time"
+      },
+      {
+        "title": "Nudge",
+        "note": "One reminder"
+      },
+      {
+        "title": "Review",
+        "note": "One weekly view"
+      }
+    ],
+    "features": [
+      {
+        "name": "Journey maps",
+        "hours": 20,
+        "in": true
+      },
+      {
+        "name": "Design-system foundations",
+        "hours": 30,
+        "in": true
+      },
+      {
+        "name": "Reminder setup",
+        "hours": 40,
+        "in": true
+      },
+      {
+        "name": "Weekly review",
+        "hours": 30,
+        "in": true
+      },
+      {
+        "name": "Prototype and sessions",
+        "hours": 30,
+        "in": true
+      },
+      {
+        "name": "Specs for engineering",
+        "hours": 24,
+        "in": true
+      },
+      {
+        "name": "Launch page",
+        "hours": 16,
+        "in": true
+      },
+      {
+        "name": "Streaks and badges",
+        "hours": 28,
+        "in": false
+      },
+      {
+        "name": "Social sharing",
+        "hours": 50,
+        "in": false
+      }
+    ],
+    "calls": [
+      {
+        "q": "The first-release cut",
+        "note": "What is in and what waits"
+      },
+      {
+        "q": "How a good first week is measured",
+        "note": "Your definition"
+      }
+    ],
+    "send": {
+      "to": "alex@example.com",
+      "subject": "First release scope"
+    },
+    "foot": "The hours are my estimates, to tune together in week one."
+  }
 }

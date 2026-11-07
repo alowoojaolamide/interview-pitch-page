@@ -20,10 +20,7 @@ One command turns a job description plus public research into a private page for
 
 ## One-time setup
 
-1. Create a private workspace folder, for example `~/pitch/`, with `profile.json`, `pages/`, `research/` and `site/`. It must **not** be inside the public skill repo.
-2. Copy `${SKILL_DIR}/examples/profile.example.json` to `profile.json` and fill it in with the candidate's real, confirmed facts (see `references/profile.md`). Add `forbid_terms` for anything that must never appear (NDA'd clients, unconfirmed claims).
-3. Create a separate static project for hosting (name it something neutral such as `pitch-pages`). **Never deploy into the candidate's main site project.** Check the project name does not match an existing project before linking.
-4. Optional free subdomain: add `for.<their-domain>` to that project.
+Run once per candidate. `node ${SKILL_DIR}/scripts/init_workspace.mjs ~/pitch` scaffolds the private workspace (profile, pages, research, brand, deploy folder). Then fill in `profile.json` (see `references/profile.md`), add the candidate's favicon, and create the hosting project exactly as described in `references/deploy.md` (neutral project name, never the portfolio project). Keep the workspace outside this repo.
 
 ## Workflow for each interview
 
@@ -31,7 +28,7 @@ One command turns a job description plus public research into a private page for
 2. **Research.** Fetch the company's site, about, product and process pages, the product the role would own, and the interviewer's public professional headline. Save facts with their source and date in `research/<slug>.json` (see `references/research.md`). Note the company's tone of voice and stage. Look for what the role's product promises publicly.
 3. **Break down the job description.** One row per requirement, tagged by theme (Product, Research, Systems, Handoff, Marketing, Trust, Working style). Include nice-to-haves.
 4. **Match evidence.** For each row, pick the best evidence ids from `profile.json`. Score the candidate's case studies against the role and show the user the ranking and the reasoning. **Get approval of the lead case study before writing.**
-5. **Write `pages/<slug>/content.json`.** Follow `references/content-schema.md`. Use the company's own words in the "What I heard" section. Map the company's own 90-day or process frame if they published one.
+5. **Write `pages/<slug>/content.json`.** Start with `node ${SKILL_DIR}/scripts/new_page.mjs --workspace ~/pitch --slug <slug>`, which copies the full-featured fictional example; replace every placeholder. Follow `references/content-schema.md`. Use the company's own words in the "What I heard" section. Map the company's own 90-day or process frame if they published one.
 6. **Check the claims.**
    `node ${SKILL_DIR}/scripts/verify_claims.mjs --content pages/<slug>/content.json --profile profile.json --research research/<slug>.json`
    Fix every FAIL. Read every warning. A page that fails must not be built.
@@ -39,8 +36,8 @@ One command turns a job description plus public research into a private page for
    `PITCH_PASSWORD='…' node ${SKILL_DIR}/scripts/build.mjs --content pages/<slug>/content.json --out site --favicon brand/favicon.png`
    Pass the candidate's own favicon (a 64 to 128 px PNG made from their site's icon) so the tab matches their portfolio even on the password screen.
    The folder gets an unguessable suffix (`/<slug>-k7q2a`). Run it again to rebuild; delete the old folder or use `--revoke`.
-8. **Test locally.** Serve `site/` (for example `python3 -m http.server`), open the page, try a wrong password, then the right one. Check desktop and a 390px phone: no horizontal scroll, images load, no console errors. Look at the screenshots.
-9. **Deploy** (with the user's go-ahead), then fetch the live URL and unlock it once.
+8. **Test locally.** Serve the output folder, then run `python3 ${SKILL_DIR}/scripts/smoke_test.py <url> --password '…'` (wrong password rejected, unlock, images, no horizontal scroll, no console errors, and each interactive section responds). Then look at screenshots of every section, light and dark, desktop and phone.
+9. **Deploy** (with the user's go-ahead) following `references/deploy.md`, then run the smoke test against the live URL.
 10. **Report.** Give the user: the link, the expiry date, a reminder to send the password in a **separate message**, the claims-check result, the honest gaps on the page, and anything they should confirm.
 11. **After the interview**, offer to refresh the page with what was said, then send it as a follow-up. Run `build.mjs --clean-expired` regularly, and `--revoke <folder>` when a process ends.
 

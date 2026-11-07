@@ -35,8 +35,9 @@
       return words.map(function (w) { return '<span class="w"><span' + (it ? ' class="serif"' : "") + ">" + w + "</span></span>"; }).join(" ");
     }).join(" ");
   }
+  function okSrc(u) { return typeof u === "string" && (/^https:\/\//.test(u) || /^data:image\/(png|jpeg|webp|svg\+xml)[;,]/.test(u)); }
   function img(i, cls) {
-    if (!i || !i.src || !/^https:\/\//.test(i.src)) return "";
+    if (!i || !okSrc(i.src)) return "";
     return '<figure class="shot ' + (cls || "") + '"><img src="' + esc(i.src) + '" alt="' + esc(i.alt || "") + '" loading="lazy" decoding="async"' + (i.w ? ' width="' + +i.w + '" height="' + +i.h + '"' : "") + ">" + (i.caption ? "<figcaption>" + md(i.caption) + "</figcaption>" : "") + "</figure>";
   }
   function head(label, title, lead) {
@@ -171,7 +172,7 @@
     return '<section id="creative"><div class="wrap">' + head(s.label || "05 — Brand and launch work", s.title, s.intro) +
       (kinds.length > 1 ? '<div class="filters wall-filters" role="group" aria-label="Highlight by type"><button type="button" aria-pressed="true" data-k="">All</button>' + kinds.map(function (k) { return '<button type="button" aria-pressed="false" data-k="' + esc(k) + '">' + esc(labels[k] || KIND[k] || k) + "</button>"; }).join("") + "</div>" : "") +
       '<div class="wall" data-wall>' + items.map(function (i, k) {
-        if (!i.src || !/^https:\/\//.test(i.src)) return "";
+        if (!okSrc(i.src)) return "";
         return '<button type="button" class="wtile" data-i="' + k + '" data-kind="' + esc(i.kind || "") + '" aria-label="Open larger: ' + esc(i.caption || i.alt || "image") + '"><img src="' + esc(i.src) + '" alt="' + esc(i.alt || "") + '" loading="lazy" decoding="async"' + (i.w ? ' width="' + +i.w + '" height="' + +i.h + '"' : "") + '><span class="wcap">' + md(i.caption || "") + "</span></button>";
       }).join("") + "</div></div></section>";
   }

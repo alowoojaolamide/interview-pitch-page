@@ -60,7 +60,7 @@ const hosts = new Set([profile.assets_base, ...((content.meta && content.meta.al
   if (Array.isArray(v)) return v.forEach(imgs);
   if (v && typeof v === "object") {
     if (typeof v.src === "string") {
-      try { const u = new URL(v.src); if (u.protocol !== "https:") fails.push(`image is not https: ${v.src}`); else if (hosts.size && !hosts.has(u.host)) warns.push(`image host not in allowlist: ${u.host}`); }
+      if (/^data:image\/(png|jpeg|webp|svg\+xml)[;,]/.test(v.src)) { /* self-contained image, fine */ } else try { const u = new URL(v.src); if (u.protocol !== "https:") fails.push(`image is not https: ${v.src}`); else if (hosts.size && !hosts.has(u.host)) warns.push(`image host not in allowlist: ${u.host}`); }
       catch { fails.push(`bad image url: ${v.src}`); }
       if (!v.alt) warns.push(`image without alt text: ${v.src}`);
       if (!v.w || !v.h) warns.push(`image without w and h (the page will jump as it loads, which breaks nav jumps): ${v.src}`);
