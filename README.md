@@ -44,7 +44,7 @@ PITCH_PASSWORD='example-pass' node skill/scripts/build.mjs --content ~/pitch/pag
 python3 -m http.server 8000 --directory ~/pitch/pitch-pages &
 python3 skill/scripts/smoke_test.py http://localhost:8000/acme/ --password 'example-pass'   # pip install playwright first
 ```
-Deploy, hand-over and revocation are in `skill/references/deploy.md`.
+Generate your private cue card with `node skill/scripts/cue_card.mjs --content ... --profile ... --out ~/pitch/cue-cards/acme` (see `skill/references/cue-card.md`). Deploy, hand-over and revocation are in `skill/references/deploy.md`.
 
 ## Layout
 
@@ -52,6 +52,7 @@ Deploy, hand-over and revocation are in `skill/references/deploy.md`.
 skill/SKILL.md            the workflow the agent follows
 skill/scripts/init_workspace.mjs, new_page.mjs   scaffold the private workspace and a new page
 skill/scripts/build.mjs   encrypt and assemble a page; revoke; clean expired
+skill/scripts/cue_card.mjs   generate the private interview cue card (markdown and 16:9 slides) from a page
 skill/scripts/smoke_test.py   end-to-end check of a built page (optional, needs Playwright)
 skill/scripts/verify_claims.mjs   the honesty gate
 skill/template/           viewer shell, styles and renderer (no framework)

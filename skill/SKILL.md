@@ -38,8 +38,9 @@ Run once per candidate. `node ${SKILL_DIR}/scripts/init_workspace.mjs ~/pitch` s
    The folder gets an unguessable suffix (`/<slug>-k7q2a`). Run it again to rebuild; delete the old folder or use `--revoke`.
 8. **Test locally.** Serve the output folder, then run `python3 ${SKILL_DIR}/scripts/smoke_test.py <url> --password '…'` (wrong password rejected, unlock, images, no horizontal scroll, no console errors, and each interactive section responds). Then look at screenshots of every section, light and dark, desktop and phone.
 9. **Deploy** (with the user's go-ahead) following `references/deploy.md`, then run the smoke test against the live URL.
-10. **Report.** Give the user: the link, the expiry date, a reminder to send the password in a **separate message**, the claims-check result, the honest gaps on the page, and anything they should confirm.
-11. **After the interview**, offer to refresh the page with what was said, then send it as a follow-up. Run `build.mjs --clean-expired` regularly, and `--revoke <folder>` when a process ends.
+10. **Cue card.** Generate the private cue card: `node ${SKILL_DIR}/scripts/cue_card.mjs --content pages/<slug>/content.json --profile profile.json --out ~/pitch/cue-cards/<slug> --when "<date, time, time zones>" --name <their first name> --company "<company>"`. It writes `cue-card.md` and a 16:9 `cue-card.html` (print to PDF with background graphics). The run of show, hours, counts and the scope-sheet click path are computed from the page, so they cannot drift. Then rewrite the "say" lines in the candidate's own voice, answer every **FILL IN** with the user (eligibility, team, rate), and check the honest answers against the evidence bank. The cue card is private: it contains the gaps, the never-say list and eligibility notes. Never publish it, never put it on the page, never share the screen with it open.
+11. **Report.** Give the user: the link, the expiry date, a reminder to send the password in a **separate message**, the claims-check result, the honest gaps on the page, and anything they should confirm.
+12. **After the interview**, offer to refresh the page with what was said, then send it as a follow-up. Run `build.mjs --clean-expired` regularly, and `--revoke <folder>` when a process ends.
 
 ## Writing rules for the page
 

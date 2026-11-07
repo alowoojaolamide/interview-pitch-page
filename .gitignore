@@ -7,3 +7,7 @@ profile.json
 research/*.json
 pages/
 !skill/examples/
+# private cue cards and decks
+cue-card*
+cue-cards/
+*.pdf

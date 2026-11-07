@@ -29,7 +29,7 @@ PITCH_PASSWORD='…' node ${SKILL_DIR}/scripts/build.mjs --content ~/pitch/pages
 - Test the live URL with the same smoke test. If the page asks for a Vercel login, deployment protection is on: turn "Vercel Authentication" off for this project in the Vercel dashboard (or use a production domain, which is not behind it).
 
 ## Hand over
-- Give the user: the link, expiry date, claims-check result, honest gaps, anything to confirm, and the cue card (run of show, likely questions with honest answers, next-step asks, the scope-sheet click path). Keep the cue card out of the page.
+- Generate the cue card (`scripts/cue_card.mjs`, see `references/cue-card.md`) and give the user: the link, expiry date, claims-check result, honest gaps, anything to confirm, and the cue card (md and slides/PDF). Keep the cue card out of the page and out of git.
 - The password goes in a separate message from the link, or is said aloud on the call.
 - After the call: rebuild with what was said (`--exact-slug`), redeploy, send as a follow-up.
 - End of process: `node ${SKILL_DIR}/scripts/build.mjs --out ~/pitch/pitch-pages --revoke <folder>` then redeploy. `--clean-expired` removes pages past their expiry.
