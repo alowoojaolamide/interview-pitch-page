@@ -112,7 +112,7 @@
     var pct = all ? Math.round((tot.design / all) * 100) : 0;
     var first = '<div class="tl-view" data-view="first" id="tl-first" role="tabpanel" aria-labelledby="tl-tab-first">' +
       (t.rhythm ? '<p class="tl-note">' + md(t.rhythm) + "</p>" : "") +
-      (t.phases ? bandRow(t.phases, "rhythm") : "") + (t.months ? bandRow(t.months, "months") : "") +
+      (t.phases ? bandRow(t.phases, "pace") : "") + (t.months ? bandRow(t.months, "months") : "") +
       '<div class="tl-rail" role="group" aria-label="Choose a stretch of weeks" data-lenis-prevent>' + segs.map(function (g, i) {
         return '<button type="button" class="tl-seg" data-i="' + i + '" data-from="' + +g.from + '" data-to="' + +g.to + '" aria-pressed="' + (i === 0) + '"><b>' + esc(g.weeks) + "</b><span>" + esc(g.short || g.title) + "</span></button>";
       }).join("") + "</div>" +
