@@ -216,7 +216,7 @@
     gsap.from("#hero-h .w>span", { yPercent: 115, duration: 1.1, ease: "power4.out", stagger: 0.07, delay: 0.15 });
     $$(".rule").forEach(function (r) { gsap.to(r, { scaleX: 1, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: r, start: "top 92%", once: true } }); });
     ST.batch("[data-r]", { start: "top 88%", once: true, onEnter: function (els) { gsap.to(els, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.09, overwrite: true }); } });
-    $$(".par img").forEach(function (im) { gsap.fromTo(im, { yPercent: -5, scale: 1.06 }, { yPercent: 5, ease: "none", scrollTrigger: { trigger: im.parentElement, start: "top bottom", end: "bottom top", scrub: true } }); });
+    // Images are shown whole: no scale or crop parallax.
     $$("[data-count]").forEach(function (n) {
       var raw = n.getAttribute("data-count"), m = raw.match(/^([^\d]*)([\d,.]+)(.*)$/); if (!m) return;
       var end = parseFloat(m[2].replace(/,/g, "")), dec = (m[2].split(".")[1] || "").length, o = { v: 0 };
