@@ -21,7 +21,7 @@ with sync_playwright() as p:
     for name, (w, h) in {"desktop": (1440, 900), "phone": (390, 844)}.items():
         ctx = b.new_context(viewport={"width": w, "height": h}); pg = ctx.new_page(); errs = []
         pg.on("pageerror", lambda e: errs.append(str(e))); pg.on("console", lambda m: errs.append(m.text) if m.type == "error" else None)
-        pg.goto(a.url); pg.wait_for_timeout(600)
+        pg.goto(a.url, wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(1200)
         check(pg.evaluate("!!document.querySelector('meta[name=robots][content*=noindex]')"), f"{name}: noindex meta present")
         pg.fill("#pw", "definitely-wrong"); pg.click("#gate-form button"); pg.wait_for_timeout(2500)
         check("didn" in pg.inner_text("#gate-msg"), f"{name}: wrong password rejected")
@@ -30,8 +30,11 @@ with sync_playwright() as p:
         if not pg.is_visible("#app"): ctx.close(); continue
         H = pg.evaluate("document.documentElement.scrollHeight"); y = 0
         while y < H: pg.mouse.wheel(0, 900); pg.wait_for_timeout(120); y += 900
-        pg.wait_for_timeout(1500)
-        bad = pg.evaluate("[...document.images].filter(i=>i.getAttribute('src')&&!(i.complete&&i.naturalWidth>0)).map(i=>(i.getAttribute('src')||'').slice(0,60))")
+        bad = []
+        for _ in range(24):   # lazy images on a slow connection: give them up to ~12 s, as a real visitor would
+            pg.wait_for_timeout(500)
+            bad = pg.evaluate("[...document.images].filter(i=>i.getAttribute('src')&&!(i.complete&&i.naturalWidth>0)).map(i=>(i.getAttribute('src')||'').slice(0,60))")
+            if not bad: break
         check(not bad, f"{name}: all images load" + (f" (failed: {bad[:3]})" if bad else ""))
         check(not pg.evaluate("document.documentElement.scrollWidth>innerWidth"), f"{name}: no horizontal scroll")
         if pg.query_selector("[data-tl]"):
