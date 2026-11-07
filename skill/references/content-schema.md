@@ -50,6 +50,13 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
                "phases": [ { "label": "Month 1 · Foundation", "title": "…", "items": ["…"], "deliver": "What they would have." } ],
                "rhythm": [ { "title": "Overlap", "text": "…" } ], "foot": "I would tune all of this with you in week one." },
 
+  // plan can use "timeline" instead of "phases": an interactive, scrubbable plan with an optional next-phase toggle.
+  // "plan": { ..., "timeline": {
+  //     "rhythm": "one line on the pacing", "phases": [ { "label": "Diagnose", "from": 1, "to": 2 } ], "months": [ { "label": "Month 1 — Foundation", "short": "Month 1", "from": 1, "to": 4 } ],
+  //     "segments": [ { "weeks": "Weeks 1 to 2", "from": 1, "to": 2, "phase": "Diagnose", "short": "Listen, then map", "title": "…", "items": ["…"],
+  //                     "with": "who it is with", "deliver": "what they would have", "decision": "a call from them",
+  //                     "hours": { "listen": 20, "design": 25, "eng": 3, "mkt": 2 } } ],     // hours per segment; the page totals them
+  //     "next": { "label": "Days 91 to 270", "intro": "…", "horizons": [ { "days": "Days 91 to 150", "short": "…", "title": "…", "items": ["…"], "decision": "…" } ] } } }
   "creative": { "label": "05 · Marketing and launch creative", "nav": "Marketing work", "title": "…", "intro": "…", "items": [ { "src": "https://…", "alt": "…", "caption": "…" } ] },
   "ask":      { "label": "06 · What I would like to learn from you", "title": "…", "intro": "…", "items": [ { "q": "Question", "why": "Why the answer changes the design." } ] },
   "close":    { "label": "07 · The short version", "nav": "Why me", "headline": "…", "reasons": [ { "title": "…", "text": "…" } ],
@@ -67,3 +74,7 @@ Evidence labels: **public** (anyone can check it), **measured** (a dated number 
 ## Matching the candidate's own brand
 
 Pull fonts, colours, radius and tone from the candidate's portfolio or site, and pass them through `theme`. Use their portrait and avatar (from their own public site) so the page reads as part of the same identity. In headings, wrap one to three words in `*asterisks*` to set them in the serif accent. Mirror their label style (for example `01 — My read`) and keep the page flat: hairline borders, no gradients, no stock illustrations. Before building, compare a screenshot of the page with a screenshot of the portfolio.
+
+## Planning numbers
+
+Weeks, days and hours in a forward plan are proposals, not claims about the past. List the ones that appear in text under `meta.allowNumbers` (hours inside `timeline.segments[].hours` are numbers, not text, so the checker does not see them). **The hours must add up to what the role allows**; if the posting says 100 hours a month, the three months must total no more than 300.

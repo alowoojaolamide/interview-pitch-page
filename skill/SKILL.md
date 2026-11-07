@@ -57,6 +57,8 @@ One command turns a job description plus public research into a private page for
 - Plain, specific, warm. Short sentences. No hype words ("passionate", "synergy"), no filler like "I am excited to".
 - Each ledger row: **have done** (one or two concrete facts with the project name) and **would do** (one concrete deliverable and when).
 - Keep their own frame where it is genuinely theirs, such as the Month 1/2/3 labels, and say so once.
+- **The plan must fit the stated hours.** Add up the work. If the posting caps the role at 100 hours a month, the three months total 300 hours at most, and the list of work has to fit inside that. Show the split (listening, design, engineering, marketing), say what is deliberately not in scope, and list the calls the plan needs from the company. Prefer the interactive `timeline` over static cards, and offer a collapsed "next 180 days" view only when the posting mentions an ongoing engagement; keep it tied to the company's own public dates and never mention price.
+- The company's published rhythm (for example a sprint) may inspire the pacing, but do not present it as their plan for this role; echo the shape once, in your own words.
 - Four questions at most for "what I would like to learn from you", each one a question whose answer changes what is designed first.
 - If the role's location, hours or eligibility rules could be a blocker, do not hide it on the page. Tell the user in the report so they can raise it early.
 - Do not show screenshots that reveal business data the candidate keeps private (revenue, payouts, user lists). Check every image before it goes on a page.

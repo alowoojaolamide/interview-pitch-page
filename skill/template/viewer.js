@@ -94,13 +94,56 @@
           '<div class="will"><div class="led-col-label">' + esc(cols[2]) + "</div>" + paras(r.will) + "</div></article>";
       }).join("") + "</div></section>";
   }
+  /* ---------- plan: either static phases or an interactive timeline ---------- */
+  var HRS = [["listen", "Listening and defining"], ["design", "Design"], ["eng", "With engineering"], ["mkt", "Marketing and launch"]];
+  function ul(a) { return "<ul>" + (a || []).map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>"; }
+  function dl(rows) {
+    return '<dl class="tl-meta">' + rows.filter(function (r) { return r[1]; }).map(function (r) { return "<div><dt>" + esc(r[0]) + "</dt><dd>" + md(r[1]) + "</dd></div>"; }).join("") + "</dl>";
+  }
+  function bandRow(list, kind) {
+    var top = 0; list.forEach(function (b) { if (b.to > top) top = b.to; });
+    return '<div class="tl-bands ' + kind + '" aria-hidden="true">' + list.map(function (b) {
+      return '<div class="tl-band" data-from="' + +b.from + '" data-to="' + +b.to + '" style="flex:' + (+b.to - +b.from + 1) + '"><span class="long">' + esc(b.label) + '</span><span class="short">' + esc(b.short || b.label) + "</span></div>";
+    }).join("") + "</div>";
+  }
+  function timeline(t) {
+    var segs = t.segments || [], tot = { listen: 0, design: 0, eng: 0, mkt: 0 }, all = 0;
+    segs.forEach(function (g) { HRS.forEach(function (h) { var v = +((g.hours || {})[h[0]] || 0); tot[h[0]] += v; all += v; }); });
+    var pct = all ? Math.round((tot.design / all) * 100) : 0;
+    var first = '<div class="tl-view" data-view="first" id="tl-first" role="tabpanel" aria-labelledby="tl-tab-first">' +
+      (t.rhythm ? '<p class="tl-note">' + md(t.rhythm) + "</p>" : "") +
+      (t.phases ? bandRow(t.phases, "rhythm") : "") + (t.months ? bandRow(t.months, "months") : "") +
+      '<div class="tl-rail" role="group" aria-label="Choose a stretch of weeks" data-lenis-prevent>' + segs.map(function (g, i) {
+        return '<button type="button" class="tl-seg" data-i="' + i + '" data-from="' + +g.from + '" data-to="' + +g.to + '" aria-pressed="' + (i === 0) + '"><b>' + esc(g.weeks) + "</b><span>" + esc(g.short || g.title) + "</span></button>";
+      }).join("") + "</div>" +
+      '<div class="tl-panels" aria-live="polite">' + segs.map(function (g, i) {
+        var max = 0; HRS.forEach(function (h) { max += +((g.hours || {})[h[0]] || 0); });
+        return '<article class="tl-panel"' + (i ? " hidden" : "") + ' data-panel="' + i + '"><p class="label">' + esc(g.weeks) + (g.phase ? " — " + esc(g.phase) : "") + "</p><h3>" + esc(g.title) + '</h3><div class="tl-cols"><div>' + ul(g.items) +
+          dl([["Working with", g.with], ["You would have", g.deliver], ["A call from you", g.decision]]) + '</div><div class="tl-hours"><p class="label">Where the ' + max + " hours go</p>" +
+          HRS.map(function (h) { var v = +((g.hours || {})[h[0]] || 0); return '<div class="tl-hr"><span>' + esc(h[1]) + '</span><i style="--w:' + (max ? Math.round((v / max) * 100) : 0) + '%"></i><b>' + v + "</b></div>"; }).join("") + "</div></div></article>";
+      }).join("") + "</div>" +
+      (all ? '<p class="tl-total">' + all + " hours in all: " + HRS.map(function (h) { return tot[h[0]] + " " + h[1].toLowerCase(); }).join(", ") + ". About " + pct + "% is design.</p>" : "") + "</div>";
+    var nx = t.next, next = "";
+    if (nx) {
+      var hz = nx.horizons || [];
+      next = '<div class="tl-view" data-view="next" id="tl-next" role="tabpanel" aria-labelledby="tl-tab-next" hidden>' + (nx.intro ? '<p class="tl-note">' + md(nx.intro) + "</p>" : "") +
+        '<div class="tl-rail" role="group" aria-label="Choose a stretch of days" data-lenis-prevent>' + hz.map(function (g, i) {
+          return '<button type="button" class="tl-seg" data-i="' + i + '" aria-pressed="' + (i === 0) + '"><b>' + esc(g.days) + "</b><span>" + esc(g.short || g.title) + "</span></button>";
+        }).join("") + "</div>" +
+        '<div class="tl-panels" aria-live="polite">' + hz.map(function (g, i) {
+          return '<article class="tl-panel"' + (i ? " hidden" : "") + ' data-panel="' + i + '"><p class="label">' + esc(g.days) + "</p><h3>" + esc(g.title) + '</h3><div class="tl-cols one"><div>' + ul(g.items) + dl([["A call from you", g.decision]]) + "</div></div></article>";
+        }).join("") + "</div></div>";
+    }
+    return '<div class="tl" data-tl>' + (nx ? '<div class="tl-tabs" role="tablist" aria-label="Plan horizon"><button type="button" role="tab" id="tl-tab-first" aria-selected="true" aria-controls="tl-first" data-tab="first">' + esc(t.firstLabel || "First 90 days") +
+      '</button><button type="button" role="tab" id="tl-tab-next" aria-selected="false" aria-controls="tl-next" data-tab="next">' + esc(nx.label || "Next 180 days") + "</button></div>" : "") + first + next + "</div>";
+  }
   function plan(c) {
     var s = c.plan; if (!s) return ""; NAV.push(["plan", s.nav || "90 days"]);
-    return '<section class="plan" id="plan"><div class="wrap">' + head(s.label || "04 Your first 90 days", s.title, s.intro) +
-      '<div class="phases">' + (s.phases || []).map(function (p) {
-        return '<article class="phase" data-r><span class="label">' + esc(p.label) + "</span><h3>" + esc(p.title) + "</h3><ul>" + (p.items || []).map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>" +
-          (p.deliver ? '<div class="deliver"><b>You would have</b><p>' + md(p.deliver) + "</p></div>" : "") + "</article>";
-      }).join("") + "</div>" +
+    var body = s.timeline ? timeline(s.timeline) : '<div class="phases">' + (s.phases || []).map(function (p) {
+      return '<article class="phase" data-r><span class="label">' + esc(p.label) + "</span><h3>" + esc(p.title) + "</h3><ul>" + (p.items || []).map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>" +
+        (p.deliver ? '<div class="deliver"><b>You would have</b><p>' + md(p.deliver) + "</p></div>" : "") + "</article>";
+    }).join("") + "</div>";
+    return '<section class="plan" id="plan"><div class="wrap">' + head(s.label || "04 — Your first 90 days", s.title, s.intro) + body +
       (s.rhythm ? '<div class="rhythm">' + s.rhythm.map(function (r) { return '<div data-r><b>' + esc(r.title) + "</b><p>" + md(r.text) + "</p></div>"; }).join("") + "</div>" : "") +
       (s.foot ? '<p class="fine" style="color:var(--on-dark-muted)" data-r>' + md(s.foot) + "</p>" : "") + "</div></section>";
   }
@@ -177,6 +220,38 @@
         if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       });
     });
+    var tlRoot = $("[data-tl]");
+    if (tlRoot) {
+      $$("[data-tab]", tlRoot).forEach(function (tb) {
+        tb.addEventListener("click", function () {
+          $$("[data-tab]", tlRoot).forEach(function (x) { x.setAttribute("aria-selected", x === tb ? "true" : "false"); });
+          $$(".tl-view", tlRoot).forEach(function (v) { v.hidden = v.getAttribute("data-view") !== tb.getAttribute("data-tab"); });
+          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+        });
+      });
+      $$(".tl-view", tlRoot).forEach(function (view) {
+        var segs = $$(".tl-seg", view), panels = $$(".tl-panel", view), bands = $$(".tl-band", view);
+        function pick(i, focus) {
+          segs.forEach(function (b, k) { b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
+          panels.forEach(function (p, k) { p.hidden = k !== i; });
+          var f = +segs[i].getAttribute("data-from"), t = +segs[i].getAttribute("data-to");
+          bands.forEach(function (bd) { var on = f && +bd.getAttribute("data-from") <= t && +bd.getAttribute("data-to") >= f; bd.classList.toggle("on", !!on); });
+          if (focus) segs[i].focus();
+          segs[i].scrollIntoView && segs[i].scrollIntoView({ block: "nearest", inline: "nearest" });
+        }
+        segs.forEach(function (b, i) {
+          b.addEventListener("click", function () { pick(i, false); });
+          b.addEventListener("keydown", function (e) {
+            var k = e.key, n = i;
+            if (k === "ArrowRight" || k === "ArrowDown") n = Math.min(segs.length - 1, i + 1);
+            else if (k === "ArrowLeft" || k === "ArrowUp") n = Math.max(0, i - 1);
+            else if (k === "Home") n = 0; else if (k === "End") n = segs.length - 1; else return;
+            e.preventDefault(); pick(n, true);
+          });
+        });
+        if (segs.length) pick(0, false);
+      });
+    }
     var tg = $(".toggle");
     if (tg) tg.addEventListener("click", function () {
       var root = document.documentElement, cur = root.getAttribute("data-theme");
