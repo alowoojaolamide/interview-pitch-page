@@ -5,8 +5,10 @@
     "for": "Sam",
     "expires": "2026-12-31",
     "gate": {
+      "eyebrow": "Walkthrough",
       "title": "For Sam",
-      "line": "A private page prepared before our call."
+      "line": "A short walkthrough of how I would approach this. I will share the password on our call.",
+      "tabTitle": "Alex Example"
     },
     "allowNumbers": [
       "1",

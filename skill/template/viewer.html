@@ -6,13 +6,15 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
-<title>Private</title>
+<title>{{TAB_TITLE}}</title>
+{{FAVICON}}
+{{GATE_BRAND}}
 <style>/*{{CSS}}*/</style>
 </head>
 <body class="is-locked">
 <main id="gate" class="gate" aria-labelledby="gate-title">
   <div class="gate-card">
-    <p class="gate-eyebrow">Private</p>
+    <p class="gate-eyebrow">{{GATE_EYEBROW}}</p>
     <h1 id="gate-title">{{GATE_TITLE}}</h1>
     <p class="gate-line">{{GATE_LINE}}</p>
     <form id="gate-form" autocomplete="off">
@@ -21,7 +23,7 @@
       <button type="submit">Open</button>
     </form>
     <p id="gate-msg" class="gate-msg" role="status" aria-live="polite"></p>
-    <p class="gate-foot">Expires {{EXPIRES}}</p>
+    <p class="gate-foot">Open until {{EXPIRES_PRETTY}}</p>
   </div>
 </main>
 <div id="app" hidden></div>

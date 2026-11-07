@@ -12,7 +12,8 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
     "title": "Alex × Acme Studio",  // browser title after unlock
     "for": "Sam",                   // shown as "For Sam" in the hero
     "expires": "2026-12-31",        // page refuses to open after this date
-    "gate": { "title": "For Sam", "line": "A private page prepared before our call." },  // visible BEFORE unlock: keep it harmless
+    "gate": { "eyebrow": "Walkthrough", "title": "For Sam", "line": "A short walkthrough of how I would approach this. I will share the password on our call.", "tabTitle": "Alex Example",
+              "fontsHref": "https://fonts.googleapis.com/css2?family=…", "display": "\"Brand Display\",sans-serif", "body": "\"Brand Sans\",sans-serif", "mono": "\"Brand Mono\",monospace" },   // everything in gate is visible before unlock: keep it harmless and on-brand  // visible BEFORE unlock: keep it harmless
     "allowNumbers": ["90", "100"],  // numbers the checker may accept without a profile claim (job-description figures, standards)
     "allowHosts": []                // extra image hosts
   },

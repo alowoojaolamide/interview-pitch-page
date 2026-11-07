@@ -27,7 +27,7 @@ One command turns a job description plus public research into a private page for
 
 ## Workflow for each interview
 
-1. **Intake.** Ask for: the job description (pasted), the company URLs, the interviewer's name and role (only the people who will be there), the interview date and time zone, and any must-avoid topics. Ask which password the user wants; warn once if it is short or guessable and let them decide.
+1. **Intake.** Ask for: the job description (pasted), the company URLs, the interviewer's name and role (only the people who will be there), the interview date and time zone, and any must-avoid topics. Ask which password the user wants; warn once if it is short or guessable and let them decide. **Ask when the page will be shared: before the interview, live during it, or after.** That decides the password-screen wording and any date-specific lines (see Writing rules).
 2. **Research.** Fetch the company's site, about, product and process pages, the product the role would own, and the interviewer's public professional headline. Save facts with their source and date in `research/<slug>.json` (see `references/research.md`). Note the company's tone of voice and stage. Look for what the role's product promises publicly.
 3. **Break down the job description.** One row per requirement, tagged by theme (Product, Research, Systems, Handoff, Marketing, Trust, Working style). Include nice-to-haves.
 4. **Match evidence.** For each row, pick the best evidence ids from `profile.json`. Score the candidate's case studies against the role and show the user the ranking and the reasoning. **Get approval of the lead case study before writing.**
@@ -36,7 +36,8 @@ One command turns a job description plus public research into a private page for
    `node ${SKILL_DIR}/scripts/verify_claims.mjs --content pages/<slug>/content.json --profile profile.json --research research/<slug>.json`
    Fix every FAIL. Read every warning. A page that fails must not be built.
 7. **Build.**
-   `PITCH_PASSWORD='…' node ${SKILL_DIR}/scripts/build.mjs --content pages/<slug>/content.json --out site`
+   `PITCH_PASSWORD='…' node ${SKILL_DIR}/scripts/build.mjs --content pages/<slug>/content.json --out site --favicon brand/favicon.png`
+   Pass the candidate's own favicon (a 64 to 128 px PNG made from their site's icon) so the tab matches their portfolio even on the password screen.
    The folder gets an unguessable suffix (`/<slug>-k7q2a`). Run it again to rebuild; delete the old folder or use `--revoke`.
 8. **Test locally.** Serve `site/` (for example `python3 -m http.server`), open the page, try a wrong password, then the right one. Check desktop and a 390px phone: no horizontal scroll, images load, no console errors. Look at the screenshots.
 9. **Deploy** (with the user's go-ahead), then fetch the live URL and unlock it once.
@@ -52,6 +53,7 @@ One command turns a job description plus public research into a private page for
 - **Quote the company's words about five times on the whole page**, each as a small epigraph that backs up the candidate's own opinion. Never use their wording as a heading.
 - **Headlines are the candidate's opinions** ("Three things I would protect"), not labels for the job post. Ledger rows get short topic titles in the candidate's words, not the posting's wording. Column heads say **The need / What I have done / What I would do**.
 - **One honest-gap row** when a requirement cannot be evidenced; it says so plainly, then what carries over. No per-row "my approach" disclaimers; the column head already says it is a plan.
+- **Match the sharing moment.** The password screen (`meta.gate`: `eyebrow`, `title`, `line`, `tabTitle`) and any sign-off or heading that names a day must fit when the page will be seen. Shared **live in the interview**: frame it as a walkthrough of how the candidate thinks, say the password will be given on the call, and never say "before our call" or "see you Tuesday". Shared **before**: say it was prepared for the conversation. Shared **after**: thank them for their time and refer to what was discussed.
 - Plain, specific, warm. Short sentences. No hype words ("passionate", "synergy"), no filler like "I am excited to".
 - Each ledger row: **have done** (one or two concrete facts with the project name) and **would do** (one concrete deliverable and when).
 - Keep their own frame where it is genuinely theirs, such as the Month 1/2/3 labels, and say so once.

@@ -2,7 +2,7 @@
 // Build one password-protected pitch page, or manage the output folder.
 // Zero dependencies. Node 18+.
 //
-//   node build.mjs --content content.json --out ../site --slug acme --expires 2026-12-31
+//   node build.mjs --content content.json --out ../site --slug acme --expires 2026-12-31 --favicon brand/favicon.png
 //   PITCH_PASSWORD=... node build.mjs --content content.json --out ../site
 //   node build.mjs --out ../site --revoke acme-k7q2
 //   node build.mjs --out ../site --clean-expired
@@ -13,7 +13,7 @@
 
 import { webcrypto, randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, resolve, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -86,9 +86,33 @@ const css = readFileSync(join(tpl, "viewer.css"), "utf8");
 const js = readFileSync(join(tpl, "viewer.js"), "utf8");
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 const gate = content.meta.gate || {};
+// The favicon is embedded before unlock so the tab looks like the candidate's own site even at the password screen.
+let favicon = "";
+if (get("favicon")) {
+  const f = resolve(get("favicon"));
+  const mime = { ".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon", ".webp": "image/webp" }[extname(f).toLowerCase()];
+  if (!mime) die("--favicon must be .png, .svg, .ico or .webp");
+  const buf = readFileSync(f);
+  if (buf.length > 60_000) die("--favicon is over 60 KB; resize it (64 to 128 px is plenty)");
+  favicon = `<link rel="icon" href="data:${mime};base64,${buf.toString("base64")}">`;
+}
+// Optional: load the candidate's fonts on the password screen too (these are not secret). Same names as content.theme.
+let gateBrand = "";
+if (gate.fontsHref) {
+  if (!/^https:\/\/fonts\.googleapis\.com\//.test(gate.fontsHref)) die("meta.gate.fontsHref must be a Google Fonts URL");
+  gateBrand += `<link rel="stylesheet" href="${esc(gate.fontsHref)}">`;
+}
+const vars = ["display", "body", "mono"].filter((k) => gate[k]).map((k) => `--${k}:${String(gate[k]).replace(/[;{}<]/g, "")}`).join(";");
+if (vars) gateBrand += `<style>:root{${vars}}</style>`;
+const prettyExpiry = new Date(expires + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 const html = readFileSync(join(tpl, "viewer.html"), "utf8")
+  .replace("{{GATE_EYEBROW}}", esc(gate.eyebrow || "Private"))
   .replace("{{GATE_TITLE}}", esc(gate.title || "A private page"))
   .replace("{{GATE_LINE}}", esc(gate.line || "Enter the password you were given."))
+  .replace("{{TAB_TITLE}}", esc(gate.tabTitle || "Private"))
+  .replace("{{FAVICON}}", () => favicon)
+  .replace("{{GATE_BRAND}}", () => gateBrand)
+  .replace("{{EXPIRES_PRETTY}}", esc(prettyExpiry))
   .replace("{{EXPIRES}}", esc(expires))
   .replace("/*{{CSS}}*/", () => css)
   .replace("/*{{JS}}*/", () => js)
