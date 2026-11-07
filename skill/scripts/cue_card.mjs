@@ -9,16 +9,24 @@
 // The "say" lines are a scaffold in the candidate's voice: the agent rewrites them. Lines marked FILL IN need a human answer.
 // The output is private. It refuses to write inside the public skill repo and must never be pushed or shown on screen.
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, realpathSync } from "node:fs";
+import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
+// Resolve symlinks (macOS /tmp is /private/tmp) even when the target does not exist yet, so "inside the repo?" checks are reliable.
+function realish(p) {
+  let cur = resolve(p), rest = [];
+  while (!existsSync(cur)) { rest.unshift(cur.slice(cur.lastIndexOf(sep) + 1)); const up = dirname(cur); if (up === cur) break; cur = up; }
+  return join(realpathSync(cur), ...rest);
+}
+const isInside = (child, parent) => child === parent || child.startsWith(parent + sep);
+
 const a = process.argv.slice(2), get = (k) => { const i = a.indexOf(`--${k}`); return i === -1 ? undefined : a[i + 1]; };
 const die = (m) => { console.error("error: " + m); process.exit(1); };
 if (!get("content") || !get("out")) die("usage: cue_card.mjs --content content.json [--profile profile.json] --out <dir> [--when text] [--name Them] [--company Co]");
-const out = resolve(get("out"));
-if (out.startsWith(resolve(here, "..", ".."))) die("write the cue card outside the public skill repo");
+const out = realish(get("out"));
+if (isInside(out, realpathSync(resolve(here, "..", "..")))) die("write the cue card outside the public skill repo");
 const c = JSON.parse(readFileSync(resolve(get("content")), "utf8"));
 const prof = get("profile") ? JSON.parse(readFileSync(resolve(get("profile")), "utf8")) : { person: {}, claims: [], gaps: [], never_say: [] };
 const name = get("name") || (c.meta && c.meta.for) || "them";
