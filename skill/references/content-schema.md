@@ -91,3 +91,21 @@ When a ledger has more than about eight rows, give every row a `strength`, a `di
 ## Images need their size
 
 Give every image `w` and `h` (its pixel size). Images load lazily; without a reserved size the page grows as they arrive, and navigation jumps can land short of their target.
+
+## The scope sheet (the closing move)
+
+An optional floating button and slide-over that turns the last minutes of a call into a working session. It stays hidden until the visitor reaches the closing section (the `S` key also opens it) and shows the smallest first piece of work, with the trade-offs.
+
+```jsonc
+"scope": {
+  "button": "Scope", "label": "One page", "title": "The first loop, *in one page.*", "intro": "Move a piece in or out and watch the hours.",
+  "budget": { "hours": 200, "weeks": 8, "label": "Weeks 1 to 8" },
+  "journey": [ { "title": "Onboard", "note": "One question at a time" } ],          // 3 steps, the smallest complete path
+  "features": [ { "name": "Onboarding by life chapter", "hours": 28, "in": true },   // default "in" sums to about 90-95% of the budget
+                { "name": "Voice companion", "hours": 40, "in": false } ],          // include at least one tempting item that would overflow
+  "calls": [ { "q": "The MVP cut", "note": "What is in this loop and what waits" } ],  // decisions needed from the company
+  "send": { "to": "candidate@example.com", "subject": "First loop scope" },        // builds a mailto with the current choices
+  "foot": "The hours are my estimates, to tune together in week one."
+}
+```
+The sheet shows a live hours meter ("Over by 30 hours: about 2 weeks later"), a decide-now / discuss-later switch per call, and buttons to email the result, print or save as PDF, and reset. The checker fails a page whose default "in" list exceeds the budget.

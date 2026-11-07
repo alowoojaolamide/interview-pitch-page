@@ -94,6 +94,12 @@ if (metaHits > 3) warns.push(`voice: ${metaHits} lines talk about the sources or
 let quoted = 0; for (const { v } of strings) quoted += (v.match(/[“"][^”"]{6,}[”"]/g) || []).length;
 if (quoted > 12) warns.push(`voice: ${quoted} quoted passages; quote the company's words only to make a point (about five on a page).`);
 
+if (content.scope) {
+  const sc = content.scope, used = (sc.features || []).filter((f) => f.in).reduce((n, f) => n + (+f.hours || 0), 0), cap = sc.budget && +sc.budget.hours;
+  if (cap && used > cap) fails.push(`scope: the default first loop is ${used} hours but the budget is ${cap}. Move something to "waits".`);
+  else if (cap && used < cap * 0.8) warns.push(`scope: the default first loop uses only ${used} of ${cap} hours; leave about 5 to 15% room, not more.`);
+  if (cap && (sc.features || []).filter((f) => !f.in).every((f) => used + (+f.hours || 0) <= cap)) warns.push("scope: nothing on the waits side overflows the budget; include at least one tempting item that does, so the trade-off shows.");
+}
 console.log(`checked ${strings.length} text fields`);
 warns.forEach((w) => console.log(`warn  ${w}`));
 fails.forEach((f) => console.log(`FAIL  ${f}`));

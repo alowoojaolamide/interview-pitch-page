@@ -228,3 +228,31 @@ section{position:relative;padding:clamp(80px,10vw,152px) var(--gutter)}
 /* motion safety */
 .js-anim [data-r]{opacity:0;transform:translateY(28px)} .js-anim .rule{transform:scaleX(0)}
 @media (prefers-reduced-motion:reduce){.js-anim [data-r]{opacity:1;transform:none}.js-anim .rule{transform:none}.marquee div{animation:none}.cue i:after{animation:none}}
+
+/* scope sheet: floating button + slide-over */
+.sc-fab{position:fixed;right:clamp(14px,2.4vw,32px);bottom:clamp(14px,2.4vw,32px);z-index:64;display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--accent);color:var(--on-accent);font:700 .95rem var(--body);cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transform:translateY(14px) scale(.96);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.sc-fab.show{opacity:1;pointer-events:auto;transform:none;animation:ping 2.4s var(--ease) 1 .6s} @keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,74,28,.55)}70%{box-shadow:0 0 0 18px rgba(255,74,28,0)}100%{box-shadow:0 10px 30px rgba(0,0,0,.25)}}
+@media (hover:hover){.sc-fab.show:hover{transform:translateY(-3px)}}
+.sc{position:fixed;inset:0;z-index:88} .sc[hidden]{display:none}
+.sc-scrim{position:absolute;inset:0;background:rgba(8,8,10,.6);backdrop-filter:blur(6px);animation:fadein .3s}
+.sc-panel{position:absolute;top:0;right:0;bottom:0;width:min(640px,100vw);overflow:auto;background:var(--paper);color:var(--ink);padding:clamp(20px,3vw,36px);box-shadow:-20px 0 60px rgba(0,0,0,.35);animation:slidein .45s var(--ease);overscroll-behavior:contain}
+@keyframes slidein{from{transform:translateX(40px);opacity:0}} @keyframes fadein{from{opacity:0}}
+.sc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px} .sc-head h2{font:var(--dw) clamp(1.7rem,3vw,2.4rem)/1 var(--display);letter-spacing:var(--dtrack);margin:.5rem 0 0}
+.sc-x{width:44px;height:44px;border-radius:50%;border:0;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink);font-size:1.4rem;cursor:pointer;flex:none}
+.sc-intro{margin:1rem 0 0;color:var(--muted)}
+.sc-steps{list-style:none;margin:1.4rem 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;counter-reset:none} .sc-steps li{position:relative;padding:12px 14px;border-radius:16px;background:color-mix(in srgb,var(--ink) 5%,transparent);display:grid;gap:3px} .sc-steps li+li:before{content:"";position:absolute;left:-9px;top:50%;width:10px;height:1px;background:var(--muted)} .sc-steps b{font:700 1rem var(--display);letter-spacing:-.02em} .sc-steps li span:last-child{font-size:.85rem;color:var(--muted);line-height:1.3}
+.sc-meter-wrap{margin-top:1.6rem;position:sticky;top:-1px;z-index:2;background:var(--paper);padding:10px 0}
+.sc-meter{height:10px;border-radius:99px;background:color-mix(in srgb,var(--ink) 10%,transparent);overflow:hidden} .sc-meter i{display:block;height:100%;width:var(--w,0%);border-radius:99px;background:var(--accent);transition:width .5s var(--ease)} .sc-meter.over i{background:repeating-linear-gradient(45deg,var(--accent) 0 8px,color-mix(in srgb,var(--accent) 55%,var(--paper)) 8px 16px)}
+.sc-hrs{margin:8px 0 0;font:400 .8rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)} .sc-hrs b{color:var(--ink);font-size:1rem} .sc-flag{margin:4px 0 0;font-size:.92rem;color:var(--muted);min-height:1.4em} .sc-flag.warn{color:var(--accent);font-weight:600}
+.sc-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:1rem} .sc-list{display:grid;gap:6px;margin-top:8px;align-content:start;min-height:60px}
+.sc-chip{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;padding:11px 14px;border-radius:14px;border:1px solid transparent;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);font:500 .92rem/1.25 var(--body);cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.sc-chip b{font:400 .78rem var(--mono);color:var(--muted);white-space:nowrap} @media (hover:hover){.sc-chip:hover{border-color:var(--ink);transform:translateY(-1px)}}
+.sc-list[data-side="in"] .sc-chip{background:color-mix(in srgb,var(--accent) 14%,transparent)} .sc-empty{margin:0;color:var(--muted);font-size:.9rem}
+.sc-h{display:block;margin-top:1.6rem}
+.sc-calls{display:grid;gap:8px;margin-top:8px} .sc-call{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--ink) 5%,transparent)} .sc-call p{margin:0;font-weight:600;font-size:.95rem;flex:1 1 220px} .sc-call small{display:block;font-weight:400;color:var(--muted);margin-top:2px}
+.sc-seg{display:inline-flex;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ink) 8%,transparent)} .sc-seg button{padding:0 12px;min-height:34px;border-radius:999px;border:0;background:transparent;color:var(--muted);font:500 .8rem var(--body);cursor:pointer} .sc-seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sc-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.6rem} .sc-actions .btn{min-height:46px;padding:0 20px;font-size:.92rem} .sc-actions .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.sc-foot{margin:1rem 0 0;color:var(--muted);font-size:.82rem}
+@media (max-width:640px){.sc-panel{top:auto;left:0;width:100%;max-height:92vh;border-radius:24px 24px 0 0;animation:rise .4s var(--ease)} @keyframes rise{from{transform:translateY(40px);opacity:0}} .sc-cols{grid-template-columns:minmax(0,1fr)} .sc-steps{grid-template-columns:minmax(0,1fr)} .sc-steps li+li:before{display:none}}
+@media print{#app>*:not(.sc){display:none!important}.sc{position:static!important}.sc-scrim,.sc-x,.sc-actions{display:none!important}.sc-panel{position:static!important;width:auto!important;max-height:none!important;box-shadow:none!important;border-radius:0!important;animation:none!important;color:#000!important;background:#fff!important}.sc-meter-wrap{position:static}.sc-chip,.sc-call,.sc-steps li{border:1px solid #bbb!important;background:#fff!important}body,html{background:#fff!important}}
+@media (prefers-reduced-motion:reduce){.sc-fab,.sc-meter i,.sc-panel,.sc-scrim{animation:none;transition:none}}

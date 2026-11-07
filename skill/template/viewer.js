@@ -175,6 +175,22 @@
         return '<button type="button" class="wtile" data-i="' + k + '" data-kind="' + esc(i.kind || "") + '" aria-label="Open larger: ' + esc(i.caption || i.alt || "image") + '"><img src="' + esc(i.src) + '" alt="' + esc(i.alt || "") + '" loading="lazy" decoding="async"' + (i.w ? ' width="' + +i.w + '" height="' + +i.h + '"' : "") + '><span class="wcap">' + md(i.caption || "") + "</span></button>";
       }).join("") + "</div></div></section>";
   }
+  var scopeData = null;
+  function scopeHtml(c) {
+    var s = c.scope; if (!s) return ""; scopeData = s;
+    var steps = (s.journey || []).map(function (j, i) { return '<li><span class="label">' + ("0" + (i + 1)).slice(-2) + "</span><b>" + esc(j.title) + "</b><span>" + esc(j.note || "") + "</span></li>"; }).join("");
+    var calls = (s.calls || []).map(function (q, i) {
+      return '<div class="sc-call" data-c="' + i + '"><p>' + md(q.q) + (q.note ? "<small>" + md(q.note) + "</small>" : "") + '</p><div class="sc-seg" role="group" aria-label="Decide now or discuss later"><button type="button" data-v="now" aria-pressed="false">Decide now</button><button type="button" data-v="later" aria-pressed="true">Discuss later</button></div></div>';
+    }).join("");
+    return '<button type="button" class="sc-fab" aria-haspopup="dialog" aria-expanded="false" aria-controls="sc"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>' + esc(s.button || "Scope") + "</span></button>" +
+      '<div class="sc" id="sc" hidden role="dialog" aria-modal="true" aria-labelledby="sc-t" data-lenis-prevent><div class="sc-scrim" data-close></div><div class="sc-panel"><div class="sc-head"><div><p class="label">' + esc(s.label || "One page") + '</p><h2 id="sc-t">' + hd(s.title || "The first piece of work, in one page") + '</h2></div><button type="button" class="sc-x" data-close aria-label="Close">&times;</button></div>' +
+      (s.intro ? '<p class="sc-intro">' + md(s.intro) + "</p>" : "") + (steps ? '<ol class="sc-steps">' + steps + "</ol>" : "") +
+      '<div class="sc-meter-wrap"><div class="sc-meter" aria-hidden="true"><i></i></div><p class="sc-hrs" aria-live="polite"></p><p class="sc-flag" aria-live="polite"></p></div>' +
+      '<div class="sc-cols"><div><h3 class="label">In the first loop</h3><div class="sc-list" data-side="in"></div></div><div><h3 class="label">Waits</h3><div class="sc-list" data-side="out"></div></div></div>' +
+      (calls ? '<h3 class="label sc-h">Calls I need from you</h3><div class="sc-calls">' + calls + "</div>" : "") +
+      '<div class="sc-actions"><a class="btn" data-mail href="#">Send this to me</a><button type="button" class="btn ghost" data-print>Print or save as PDF</button><button type="button" class="btn ghost" data-reset>Reset</button></div>' +
+      (s.foot ? '<p class="sc-foot">' + md(s.foot) + "</p>" : "") + "</div></div>";
+  }
   function ask(c) {
     var s = c.ask; if (!s) return "";
     return '<section id="ask" style="padding-top:0"><div class="wrap">' + head(s.label || "06 What I would like to learn from you", s.title, s.intro) +
@@ -230,6 +246,7 @@
       '<button type="button" class="toggle" aria-label="Switch light and dark theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>';
     var app = $("#app");
     app.innerHTML = '<div class="progress" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>' + nav + "<main>" + body + "</main>";
+    app.insertAdjacentHTML("beforeend", scopeHtml(c));
     app.insertAdjacentHTML("beforeend", '<div class="lb" hidden role="dialog" aria-modal="true" aria-label="Image viewer" data-lenis-prevent><button type="button" class="lb-x" aria-label="Close">&times;</button><button type="button" class="lb-p" aria-label="Previous">&larr;</button><figure><img alt=""><figcaption></figcaption></figure><button type="button" class="lb-n" aria-label="Next">&rarr;</button></div>');
     app.hidden = false; document.body.classList.remove("is-locked"); $("#gate").remove();
     wire(); motion();
@@ -244,6 +261,55 @@
         if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       });
     });
+    var sc = $(".sc"), fab = $(".sc-fab");
+    if (sc && fab && scopeData) {
+      var S = scopeData, B = S.budget || { hours: 0, weeks: 1 }, feats = (S.features || []).map(function (f) { return { name: f.name, hours: +f.hours || 0, on: !!f.in, was: !!f.in }; }), calls = {}, openFrom = null;
+      var perWeek = B.weeks ? B.hours / B.weeks : B.hours || 1;
+      function draw() {
+        var used = 0; feats.forEach(function (f) { if (f.on) used += f.hours; });
+        ["in", "out"].forEach(function (side) {
+          var host = $('.sc-list[data-side="' + side + '"]', sc), html = "";
+          feats.forEach(function (f, i) { if ((side === "in") === f.on) html += '<button type="button" class="sc-chip" data-i="' + i + '" aria-label="' + esc(f.name) + ", " + f.hours + " hours. Move to " + (f.on ? "waits" : "the first loop") + '"><span>' + esc(f.name) + "</span><b>" + f.hours + " h</b></button>"; });
+          host.innerHTML = html || '<p class="sc-empty">Nothing here.</p>';
+        });
+        var over = used - B.hours, pct = Math.min(100, Math.round((used / (B.hours || 1)) * 100));
+        $(".sc-meter", sc).classList.toggle("over", over > 0); $(".sc-meter i", sc).style.setProperty("--w", pct + "%");
+        $(".sc-hrs", sc).innerHTML = "<b>" + used + "</b> of " + B.hours + " hours" + (B.label ? " &middot; " + esc(B.label) : "");
+        var flag = $(".sc-flag", sc);
+        if (over > 0) { var wk = Math.ceil(over / perWeek); flag.textContent = "Over by " + over + " hours: about " + wk + (wk === 1 ? " week" : " weeks") + " later."; flag.className = "sc-flag warn"; }
+        else { flag.textContent = (B.hours - used) + " hours of room."; flag.className = "sc-flag"; }
+        var mail = $("[data-mail]", sc);
+        if (mail && S.send && S.send.to) {
+          var body = (S.title || "Scope") + " (my estimates)\n\nIn the first loop (" + used + " of " + B.hours + " hours):\n" + feats.filter(function (f) { return f.on; }).map(function (f) { return "- " + f.name + " (" + f.hours + " h)"; }).join("\n") +
+            "\n\nWaits:\n" + (feats.filter(function (f) { return !f.on; }).map(function (f) { return "- " + f.name + " (" + f.hours + " h)"; }).join("\n") || "- nothing") +
+            "\n\nCalls:\n" + (S.calls || []).map(function (q, i) { return "- " + q.q.replace(/[*_]/g, "") + ": " + (calls[i] === "now" ? "decide now" : "discuss later"); }).join("\n");
+          mail.href = "mailto:" + S.send.to + "?subject=" + encodeURIComponent(S.send.subject || "First loop scope") + "&body=" + encodeURIComponent(body);
+        }
+      }
+      function setOpen(v) {
+        if (v === !sc.hidden) return;
+        sc.hidden = !v; fab.setAttribute("aria-expanded", v ? "true" : "false"); document.documentElement.style.overflow = v ? "hidden" : "";
+        if (v) { openFrom = document.activeElement; fab.classList.add("show"); $(".sc-x", sc).focus(); } else if (openFrom && openFrom.focus) openFrom.focus();
+      }
+      draw();
+      fab.addEventListener("click", function () { setOpen(true); });
+      $$("[data-close]", sc).forEach(function (b) { b.addEventListener("click", function () { setOpen(false); }); });
+      $(".sc-cols", sc).addEventListener("click", function (e) { var b = e.target.closest(".sc-chip"); if (!b) return; var f = feats[+b.getAttribute("data-i")]; f.on = !f.on; draw(); var again = $('.sc-chip[data-i="' + b.getAttribute("data-i") + '"]', sc); if (again) again.focus(); });
+      $$(".sc-call", sc).forEach(function (row) {
+        $$(".sc-seg button", row).forEach(function (bt) { bt.addEventListener("click", function () { $$(".sc-seg button", row).forEach(function (x) { x.setAttribute("aria-pressed", x === bt ? "true" : "false"); }); calls[+row.getAttribute("data-c")] = bt.getAttribute("data-v"); draw(); }); });
+      });
+      $("[data-reset]", sc).addEventListener("click", function () { feats.forEach(function (f) { f.on = f.was; }); calls = {}; $$(".sc-seg button", sc).forEach(function (x) { x.setAttribute("aria-pressed", x.getAttribute("data-v") === "later" ? "true" : "false"); }); draw(); });
+      $("[data-print]", sc).addEventListener("click", function () { window.print(); });
+      document.addEventListener("keydown", function (e) {
+        var tag = (document.activeElement && document.activeElement.tagName) || "";
+        if (e.key === "Escape" && !sc.hidden) { setOpen(false); return; }
+        if ((e.key === "s" || e.key === "S") && !e.metaKey && !e.ctrlKey && !e.altKey && !/INPUT|TEXTAREA|SELECT/.test(tag) && $(".lb").hidden) { e.preventDefault(); setOpen(sc.hidden); }
+      });
+      // The button stays out of the way during the talk and appears when the closing section is reached.
+      var closeSec = $("#close");
+      if (closeSec && "IntersectionObserver" in window) new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting) fab.classList.add("show"); }); }, { threshold: 0.35 }).observe(closeSec);
+      else fab.classList.add("show");
+    }
     var wall = $("[data-wall]"), lb = $(".lb");
     if (wall && lb) {
       var wt = $$(".wtile", wall), cur = -1, opener = null, lbi = $("img", lb), lbc = $("figcaption", lb);
