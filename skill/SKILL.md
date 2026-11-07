@@ -54,7 +54,8 @@ One command turns a job description plus public research into a private page for
 
 ## Design rules for the page
 
-- Pick a theme (`theme` in the content) that suits the company's feel: paper, ink, accent, dark. Keep contrast AA or better in light and dark.
+- **Match the candidate's own brand, not the company's.** Read the candidate's portfolio CSS or screenshots and carry over its fonts, palette, label style, radius and tone through `theme`, plus its portrait and avatar. A page that looks nothing like the candidate's site feels generic. Keep contrast AA or better in light and dark, and offer the theme toggle.
+- Avoid template tells: soft gradient blobs, glassy cards, emoji, stock icons, default serif-plus-sans pairings that are not the candidate's own.
 - Motion is an enhancement. The page must be complete with scripts blocked and with reduced motion on.
 - Images must be `https` and come from the candidate's own public site. Use only screens the candidate is cleared to show.
 - Keep the page under about six minutes of reading.

@@ -5,6 +5,9 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
 ```jsonc
 {
   "meta": {
+    "avatar": "https://…/avatar.webp",   // optional: round avatar in the nav pill
+    "portrait": "https://…/portrait.webp", // optional: portrait in the hero
+    "home": "https://…", "homeLabel": "Portfolio", // optional: nav pill linking to the candidate's site
     "slug": "acme",                 // folder prefix; the build adds a random suffix
     "title": "Alex × Acme Studio",  // browser title after unlock
     "for": "Sam",                   // shown as "For Sam" in the hero
@@ -13,8 +16,11 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
     "allowNumbers": ["90", "100"],  // numbers the checker may accept without a profile claim (job-description figures, standards)
     "allowHosts": []                // extra image hosts
   },
-  "theme": { "paper": "#fbf6ef", "surface": "#f3ebe0", "ink": "#2b2030", "accent": "#c2492f", "dark": "#1f1724",
-             "fontsHref": "https://fonts.googleapis.com/css2?family=…", "display": "\"Fraunces\",serif", "body": "\"DM Sans\",sans-serif" },
+  "theme": { "display": "\"Brand Display\",sans-serif", "body": "\"Brand Sans\",sans-serif", "mono": "\"Brand Mono\",monospace", "serif": "\"Brand Serif\",serif",
+             "displayWeight": 800, "displayTracking": "-0.04em", "radius": "24px", "mode": "auto",
+             "fontsHref": "https://fonts.googleapis.com/css2?family=…",
+             "light": { "paper": "#f6f5f1", "surface": "#ffffff", "ink": "#0b0b0c", "muted": "#55554f", "accent": "#ff4a1c", "dark": "#0b0b0c" },
+             "dark":  { "paper": "#0b0b0c", "surface": "#151517", "ink": "#f6f5f1", "muted": "#a9a9a2", "accent": "#ff4a1c", "dark": "#151517" } },
 
   "hero":    { "eyebrow": "Role · Product", "headline": "One sentence that names the product and the promise.", "sub": "Two sentences.", "cta": { "label": "See how I would start", "to": "heard" } },
   "marquee": ["Short", "keywords", "from the role"],
@@ -50,3 +56,7 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
 Required: `meta`, `hero`, `close`. Every other section is optional and is skipped when absent.
 
 Evidence labels: **public** (anyone can check it), **measured** (a dated number from a real dashboard or report), **design** (a design-level fact about what was made), **judgement** (the candidate's opinion).
+
+## Matching the candidate's own brand
+
+Pull fonts, colours, radius and tone from the candidate's portfolio or site, and pass them through `theme`. Use their portrait and avatar (from their own public site) so the page reads as part of the same identity. In headings, wrap one to three words in `*asterisks*` to set them in the serif accent. Mirror their label style (for example `01 — The brief`) and keep the page flat: hairline borders, no gradients, no stock illustrations. Before building, compare a screenshot of the page with a screenshot of the portfolio.

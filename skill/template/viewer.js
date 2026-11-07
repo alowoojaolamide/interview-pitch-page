@@ -28,20 +28,27 @@
   function paras(a) { return (Array.isArray(a) ? a : [a]).filter(Boolean).map(function (t) { return "<p>" + md(t) + "</p>"; }).join(""); }
   var TAGS = { public: "Public", measured: "Measured", design: "Design-level", judgement: "Judgement", mine: "My approach", gap: "Honest gap" };
   function tag(k) { return k && TAGS[k] ? '<span class="tag ' + (k === "mine" ? "mine" : k === "gap" ? "gap" : "") + '">' + TAGS[k] + "</span>" : ""; }
-  function splitWords(t) { return esc(t).split(/\s+/).map(function (w) { return '<span class="w"><span>' + w + "</span></span>"; }).join(" "); }
+  function hd(t) { return esc(t).replace(/\*([^*]+)\*/g, "<em>$1</em>"); }
+  function splitWords(t) {
+    return String(t).split(/(\*[^*]+\*)/).filter(Boolean).map(function (part) {
+      var it = part.charAt(0) === "*", words = esc(it ? part.slice(1, -1) : part).split(/\s+/).filter(Boolean);
+      return words.map(function (w) { return '<span class="w"><span' + (it ? ' class="serif"' : "") + ">" + w + "</span></span>"; }).join(" ");
+    }).join(" ");
+  }
   function img(i, cls) {
     if (!i || !i.src || !/^https:\/\//.test(i.src)) return "";
     return '<figure class="shot ' + (cls || "") + '"><img src="' + esc(i.src) + '" alt="' + esc(i.alt || "") + '" loading="lazy" decoding="async"' + (i.w ? ' width="' + +i.w + '" height="' + +i.h + '"' : "") + ">" + (i.caption ? "<figcaption>" + md(i.caption) + "</figcaption>" : "") + "</figure>";
   }
   function head(label, title, lead) {
-    return '<p class="label" data-r>' + esc(label) + '</p><h2 class="h-lg" data-r>' + esc(title) + "</h2>" + (lead ? '<p class="lead" data-r>' + md(lead) + "</p>" : "");
+    return '<div class="rule" aria-hidden="true"></div><p class="label" data-r>' + esc(label) + '</p><h2 class="h-lg" data-r>' + hd(title) + "</h2>" + (lead ? '<p class="lead" data-r>' + md(lead) + "</p>" : "");
   }
 
   /* ---------- sections ---------- */
   var NAV = [];
   function hero(c) {
     var h = c.hero, m = c.meta || {};
-    return '<section class="hero" id="top"><div class="blob a" aria-hidden="true"></div><div class="blob b" aria-hidden="true"></div><div class="wrap"><div class="eyebrow">' +
+    var pt = m.portrait && /^https:\/\//.test(m.portrait) ? '<div class="hero-portrait" aria-hidden="true"><img src="' + esc(m.portrait) + '" alt="" decoding="async"></div>' : "";
+    return '<section class="hero" id="top">' + pt + '<div class="wrap"><div class="eyebrow"><span class="dot" aria-hidden="true"></span>' +
       (h.eyebrow ? '<span class="label">' + esc(h.eyebrow) + "</span>" : "") + (m.for ? '<span class="label">For ' + esc(m.for) + "</span>" : "") +
       '</div><h1 class="h-xl" id="hero-h">' + splitWords(h.headline) + "</h1>" +
       (h.sub ? '<p class="sub" data-r>' + md(h.sub) + "</p>" : "") +
@@ -49,7 +56,7 @@
   }
   function marquee(c) {
     var w = c.marquee; if (!w || !w.length) return "";
-    var one = w.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("");
+    var one = w.map(function (x) { return "<span>" + esc(x) + "</span><i>/</i>"; }).join("");
     return '<div class="marquee" aria-hidden="true"><div>' + one + one + "</div></div>";
   }
   function heard(c) {
@@ -107,7 +114,7 @@
   }
   function close(c) {
     var s = c.close; NAV.push(["close", s.nav || "Why me"]);
-    return '<section class="close" id="close"><div class="wrap"><p class="label" data-r>' + esc(s.label || "07 The short version") + '</p><h2 class="h-xl" data-r>' + esc(s.headline) + "</h2>" +
+    return '<section class="close" id="close"><div class="wrap"><div class="rule" aria-hidden="true"></div><p class="label" data-r>' + esc(s.label || "07 The short version") + '</p><h2 class="h-xl" data-r>' + hd(s.headline) + "</h2>" +
       '<ol class="reasons">' + (s.reasons || []).map(function (r) { return '<li data-r><h3>' + esc(r.title) + "</h3><p>" + md(r.text) + "</p></li>"; }).join("") + "</ol>" +
       '<div class="cta">' + (s.ctas || []).map(function (b, i) { return '<a class="btn' + (i ? " ghost" : "") + '" href="' + esc(b.href) + '"' + (/^https:/.test(b.href) ? ' target="_blank" rel="noopener noreferrer"' : "") + ">" + esc(b.label) + "</a>"; }).join("") + "</div>" +
       (s.signoff ? '<p class="sign" data-r>' + md(s.signoff) + "</p>" : "") + "</div></section>";
@@ -120,18 +127,39 @@
   }
 
   /* ---------- render ---------- */
+  var TOK = { paper: "--paper", surface: "--surface", ink: "--ink", muted: "--muted", line: "--line", accent: "--accent", accentSoft: "--accent-soft", onAccent: "--on-accent", dark: "--dark", onDark: "--on-dark", onDarkMuted: "--on-dark-muted" };
+  var SAFE = /^#[0-9a-f]{3,8}$|^rgba?\([\d\s.,%]+\)$/i;
+  function block(sel, o) {
+    var d = ""; Object.keys(TOK).forEach(function (k) { if (o && o[k] && SAFE.test(o[k])) d += TOK[k] + ":" + o[k] + ";"; });
+    return d ? sel + "{" + d + "}" : "";
+  }
   function applyTheme(t) {
-    if (!t) return; var r = document.documentElement.style;
-    var map = { paper: "--paper", surface: "--surface", ink: "--ink", muted: "--muted", accent: "--accent", accentSoft: "--accent-soft", dark: "--dark" };
-    Object.keys(map).forEach(function (k) { if (t[k] && /^#[0-9a-f]{3,8}$|^rgba?\([\d\s.,%]+\)$/i.test(t[k])) r.setProperty(map[k], t[k]); });
+    if (!t) return;
+    var light = t.light || t, dark = t.dark && typeof t.dark === "object" ? t.dark : null;
+    var css = block(":root", light);
+    if (dark) css += "@media (prefers-color-scheme:dark){" + block(':root:not([data-theme="light"])', dark) + "}" + block(':root[data-theme="dark"]', dark);
+    if (light && !dark) css += "";
+    var fonts = [["display", "--display"], ["body", "--body"], ["mono", "--mono"], ["serif", "--serif"]], r = "";
+    fonts.forEach(function (f) { if (t[f[0]]) r += f[1] + ":" + String(t[f[0]]).replace(/[;{}<]/g, "") + ";"; });
+    if (+t.displayWeight >= 300 && +t.displayWeight <= 900) r += "--dw:" + +t.displayWeight + ";";
+    if (/^-?[\d.]+em$/.test(t.displayTracking || "")) r += "--dtrack:" + t.displayTracking + ";";
+    if (/^\d{1,2}px$/.test(t.radius || "")) r += "--r:" + t.radius + ";";
+    if (r) css += ":root{" + r + "}";
+    if (css) { var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st); }
     if (t.fontsHref && /^https:\/\/fonts\.googleapis\.com\//.test(t.fontsHref)) { var l = document.createElement("link"); l.rel = "stylesheet"; l.href = t.fontsHref; document.head.appendChild(l); }
-    if (t.display) r.setProperty("--display", t.display.replace(/[;{}]/g, "")); if (t.body) r.setProperty("--body", t.body.replace(/[;{}]/g, ""));
+    if (t.mode === "light" || t.mode === "dark") document.documentElement.setAttribute("data-theme", t.mode);
+    try { var sv = localStorage.getItem("pp-theme"); if (sv === "light" || sv === "dark") document.documentElement.setAttribute("data-theme", sv); } catch (e) {}
   }
   function render(c) {
     applyTheme(c.theme); NAV = [];
     document.title = c.meta && c.meta.title ? c.meta.title : "Private";
     var body = hero(c) + marquee(c) + heard(c) + story(c) + ledger(c) + plan(c) + creative(c) + ask(c) + close(c) + sources(c);
-    var nav = '<nav class="topbar" aria-label="Sections">' + NAV.map(function (n) { return '<a href="#' + n[0] + '">' + esc(n[1]) + "</a>"; }).join("") + "</nav>";
+    var m = c.meta || {}, home = /^https:\/\//.test(m.home || "") ? m.home : "";
+    var nav = '<nav class="topbar" aria-label="Sections">' +
+      (m.avatar && /^https:\/\//.test(m.avatar) ? '<a class="avatar" href="' + (home ? esc(home) : "#top") + '"' + (home ? ' target="_blank" rel="noopener noreferrer"' : "") + ' aria-label="' + esc(m.avatarLabel || "Home") + '"><img src="' + esc(m.avatar) + '" alt="" width="44" height="44"></a>' : "") +
+      '<div class="links">' + NAV.map(function (n) { return '<a href="#' + n[0] + '">' + esc(n[1]) + "</a>"; }).join("") + "</div>" +
+      (home && m.homeLabel ? '<a class="pill" href="' + esc(home) + '" target="_blank" rel="noopener noreferrer">' + esc(m.homeLabel) + " &#8599;</a>" : "") +
+      '<button type="button" class="toggle" aria-label="Switch light and dark theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></nav>';
     var app = $("#app");
     app.innerHTML = '<div class="progress" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>' + nav + "<main>" + body + "</main>";
     app.hidden = false; document.body.classList.remove("is-locked"); $("#gate").remove();
@@ -147,7 +175,14 @@
         if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       });
     });
-    var links = $$(".topbar a"), chap = $$(".chap-list a");
+    var tg = $(".toggle");
+    if (tg) tg.addEventListener("click", function () {
+      var root = document.documentElement, cur = root.getAttribute("data-theme");
+      if (!cur) { try { cur = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch (e) { cur = "light"; } }
+      var nx = cur === "dark" ? "light" : "dark"; root.setAttribute("data-theme", nx);
+      try { localStorage.setItem("pp-theme", nx); } catch (e) {}
+    });
+    var links = $$(".topbar .links a"), chap = $$(".chap-list a");
     function spy() {
       var y = window.scrollY + innerHeight * 0.35, cur = null;
       links.forEach(function (a) { var s = $(a.getAttribute("href")); if (s && s.offsetTop <= y) cur = a; });
@@ -177,8 +212,7 @@
       $$('a[href^="#"]').forEach(function (a) { a.addEventListener("click", function (e) { var t = $(a.getAttribute("href")); if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -70 }); } }); });
     }
     gsap.from("#hero-h .w>span", { yPercent: 115, duration: 1.1, ease: "power4.out", stagger: 0.07, delay: 0.15 });
-    gsap.to(".blob.a", { x: 60, y: 40, duration: 14, repeat: -1, yoyo: true, ease: "sine.inOut" });
-    gsap.to(".blob.b", { x: -50, y: -30, duration: 17, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    $$(".rule").forEach(function (r) { gsap.to(r, { scaleX: 1, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: r, start: "top 92%", once: true } }); });
     ST.batch("[data-r]", { start: "top 88%", once: true, onEnter: function (els) { gsap.to(els, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.09, overwrite: true }); } });
     $$(".par img").forEach(function (im) { gsap.fromTo(im, { yPercent: -5, scale: 1.06 }, { yPercent: 5, ease: "none", scrollTrigger: { trigger: im.parentElement, start: "top bottom", end: "bottom top", scrub: true } }); });
     $$("[data-count]").forEach(function (n) {
