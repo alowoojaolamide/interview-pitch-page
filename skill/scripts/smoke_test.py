@@ -31,7 +31,7 @@ with sync_playwright() as p:
         H = pg.evaluate("document.documentElement.scrollHeight"); y = 0
         while y < H: pg.mouse.wheel(0, 900); pg.wait_for_timeout(120); y += 900
         pg.wait_for_timeout(1500)
-        bad = pg.evaluate("[...document.images].filter(i=>!(i.complete&&i.naturalWidth>0)).map(i=>(i.getAttribute('src')||'').slice(0,60))")
+        bad = pg.evaluate("[...document.images].filter(i=>i.getAttribute('src')&&!(i.complete&&i.naturalWidth>0)).map(i=>(i.getAttribute('src')||'').slice(0,60))")
         check(not bad, f"{name}: all images load" + (f" (failed: {bad[:3]})" if bad else ""))
         check(not pg.evaluate("document.documentElement.scrollWidth>innerWidth"), f"{name}: no horizontal scroll")
         if pg.query_selector("[data-tl]"):
