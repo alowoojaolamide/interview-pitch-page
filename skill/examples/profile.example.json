@@ -1,0 +1,48 @@
+{
+  "_note": "EXAMPLE ONLY. Fictional person. Copy to your private workspace and replace everything.",
+  "person": {
+    "name": "Alex Example",
+    "role": "Product Designer",
+    "email": "alex@example.com",
+    "site": "https://example.com",
+    "booking": "https://example.com/book",
+    "timezone": "Europe/London"
+  },
+  "assets_base": "https://example.com",
+  "claims": [
+    {
+      "id": "p1",
+      "project": "Orbit",
+      "text": "Founded and designed Orbit, a habit-tracking app, from first sketch to a public launch in two cities.",
+      "label": "public"
+    },
+    {
+      "id": "p2",
+      "project": "Orbit",
+      "text": "Reminders are chosen by the user, never scheduled for them, and can be changed from the first screen.",
+      "label": "design"
+    },
+    {
+      "id": "p3",
+      "project": "Orbit",
+      "text": "1,200 people signed up in the first month (analytics dashboard, 1 March 2025).",
+      "label": "measured"
+    },
+    {
+      "id": "p4",
+      "project": "Fieldwork",
+      "text": "Designed a component library of 40 components for a field-service tool, handed to developers with acceptance criteria.",
+      "label": "design"
+    }
+  ],
+  "gaps": [
+    "No shipped finance product."
+  ],
+  "never_say": [
+    "Revenue figures",
+    "Names of clients under NDA"
+  ],
+  "forbid_terms": [
+    "Confidential Client"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "company": "Acme Studio",
+  "fetchedAt": "2026-01-15",
+  "sources": [
+    {
+      "url": "https://acme.example/",
+      "facts": [
+        "Acme Studio is a product studio founded in 2012.",
+        "It runs a 6-week Discovery Sprint."
+      ]
+    },
+    {
+      "url": "role description (pasted)",
+      "facts": [
+        "Senior Product Designer, contract, 3 months.",
+        "Month 1 Discover, Month 2 Build, Month 3 Launch."
+      ]
+    }
+  ]
+}

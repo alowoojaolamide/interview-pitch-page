@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>Private</title>
+<style>/*{{CSS}}*/</style>
+</head>
+<body class="is-locked">
+<main id="gate" class="gate" aria-labelledby="gate-title">
+  <div class="gate-card">
+    <p class="gate-eyebrow">Private</p>
+    <h1 id="gate-title">{{GATE_TITLE}}</h1>
+    <p class="gate-line">{{GATE_LINE}}</p>
+    <form id="gate-form" autocomplete="off">
+      <label for="pw" class="sr">Password</label>
+      <input id="pw" type="password" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="Password" required>
+      <button type="submit">Open</button>
+    </form>
+    <p id="gate-msg" class="gate-msg" role="status" aria-live="polite"></p>
+    <p class="gate-foot">Expires {{EXPIRES}}</p>
+  </div>
+</main>
+<div id="app" hidden></div>
+<script type="application/json" id="payload">{{PAYLOAD}}</script>
+<script>/*{{JS}}*/</script>
+</body>
+</html>

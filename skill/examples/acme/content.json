@@ -1,0 +1,199 @@
+{
+  "meta": {
+    "slug": "acme",
+    "title": "Alex × Acme Studio",
+    "for": "Sam",
+    "expires": "2026-12-31",
+    "gate": {
+      "title": "For Sam",
+      "line": "A private page prepared before our call."
+    },
+    "allowNumbers": [
+      "1",
+      "2",
+      "3",
+      "6",
+      "2012"
+    ]
+  },
+  "theme": {
+    "paper": "#f6f7fb",
+    "surface": "#eceef6",
+    "ink": "#16192b",
+    "accent": "#3a56e8",
+    "dark": "#101326"
+  },
+  "hero": {
+    "eyebrow": "Senior Product Designer",
+    "headline": "Designing the next release of Acme’s habit product.",
+    "sub": "I read your site and the role. Here is what I have done for each thing you asked, and how I would spend the first three months.",
+    "cta": {
+      "label": "See how I would start",
+      "to": "heard"
+    }
+  },
+  "marquee": [
+    "Concept to launch",
+    "Clear reminders",
+    "Component libraries",
+    "Handoff"
+  ],
+  "heard": {
+    "title": "Your words, and what they tell me.",
+    "intro": "Two lines from the role.",
+    "items": [
+      {
+        "quote": "Own the experience from first sketch to launch.",
+        "theme": "The role",
+        "note": "One designer, one thread."
+      },
+      {
+        "quote": "Reminders people actually keep.",
+        "theme": "The product",
+        "note": "The product lives or dies on trust in the nudge."
+      }
+    ]
+  },
+  "story": {
+    "title": "One product from sketch to launch.",
+    "intro": "Orbit is a fictional example.",
+    "big": "Orbit",
+    "project": "Founder and designer",
+    "meta": "Public launch in two cities.",
+    "chapters": [
+      {
+        "label": "The problem",
+        "title": "People forgot the app, not the habit.",
+        "body": [
+          "Most habit apps remind people on the app’s schedule. Orbit lets the user choose."
+        ],
+        "image": {
+          "src": "https://example.com/orbit-home.webp",
+          "alt": "Orbit home screen",
+          "caption": "Home."
+        },
+        "tags": [
+          "design"
+        ]
+      },
+      {
+        "label": "The result",
+        "title": "What launched.",
+        "body": [
+          "A public launch in two cities."
+        ],
+        "stat": {
+          "value": "1,200",
+          "label": "sign-ups in the first month (analytics dashboard, 1 March 2025)"
+        },
+        "tags": [
+          "measured"
+        ]
+      }
+    ]
+  },
+  "ledger": {
+    "title": "Every line of the role, answered.",
+    "intro": "For each line: what you asked, what I did, and what I would do.",
+    "rows": [
+      {
+        "theme": "Product",
+        "ask": "Own the experience from first sketch to launch.",
+        "project": "Orbit",
+        "label": "public",
+        "did": "Founded and designed Orbit from first sketch to a public launch in two cities.",
+        "will": "One journey map in week 1 and a clickable prototype in week 3."
+      },
+      {
+        "theme": "Systems",
+        "ask": "Build and maintain a component library.",
+        "project": "Fieldwork",
+        "label": "design",
+        "did": "Designed a component library of 40 components for a field-service tool.",
+        "will": "Tokens and a core set in the first two weeks."
+      },
+      {
+        "theme": "Trust",
+        "ask": "Experience with finance products.",
+        "project": "Orbit",
+        "gap": true,
+        "did": "This is my honest gap: I have not shipped a finance product.",
+        "will": "A data map and a plain-language consent review before any screen."
+      }
+    ]
+  },
+  "plan": {
+    "title": "Your three months.",
+    "intro": "I kept your frame and filled it in.",
+    "phases": [
+      {
+        "label": "Month 1 · Discover",
+        "title": "Listen and map.",
+        "items": [
+          "Read the brief and talk with the team.",
+          "Map the core journeys."
+        ],
+        "deliver": "Journey maps and a first system."
+      },
+      {
+        "label": "Month 2 · Build",
+        "title": "Prototype and hand off.",
+        "items": [
+          "Priority screens.",
+          "Specs for engineering."
+        ],
+        "deliver": "A tested prototype and specs."
+      },
+      {
+        "label": "Month 3 · Launch",
+        "title": "QA and polish.",
+        "items": [
+          "Design QA against the build."
+        ],
+        "deliver": "A QA-checked build."
+      }
+    ],
+    "foot": "This is my approach, to test with you."
+  },
+  "ask": {
+    "title": "Two questions.",
+    "items": [
+      {
+        "q": "What does a good first month look like?",
+        "why": "It changes what I design first."
+      }
+    ]
+  },
+  "close": {
+    "headline": "I would like to build this with you.",
+    "reasons": [
+      {
+        "title": "Concept to launch.",
+        "text": "Orbit, start to finish."
+      },
+      {
+        "title": "Trust you can see.",
+        "text": "User-chosen reminders."
+      },
+      {
+        "title": "Honest about gaps.",
+        "text": "No finance product yet."
+      }
+    ],
+    "ctas": [
+      {
+        "label": "Reply to Alex",
+        "href": "mailto:alex@example.com"
+      }
+    ],
+    "signoff": "Thank you for reading, Sam."
+  },
+  "sources": [
+    {
+      "label": "acme.example",
+      "url": "https://acme.example/",
+      "note": "what the studio does"
+    }
+  ],
+  "fine": "Everything about the company comes from public pages and the role description. No outcome figures are claimed beyond those labelled with a source."
+}
