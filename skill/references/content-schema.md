@@ -25,31 +25,36 @@ All text fields accept a tiny markup: `**bold**`, `*italic*`, and `[text](https:
   "hero":    { "eyebrow": "Role · Product", "headline": "One sentence that names the product and the promise.", "sub": "Two sentences.", "cta": { "label": "See how I would start", "to": "heard" } },
   "marquee": ["Short", "keywords", "from the role"],
 
-  "heard":   { "label": "01 · What I heard", "nav": "What I heard", "title": "…", "intro": "…",
-               "items": [ { "quote": "Their exact public words", "theme": "The product", "note": "What it tells me." } ], "foot": "…" },
+  "heard":   { "label": "01 — My read", "nav": "My read", "title": "Three things I would *protect.*",   // the candidate's point of view, not a summary of the brief
+               "items": [ { "headline": "The candidate's opinion, as a sentence.", "theme": "The product",
+                            "quote": "Short exact public phrase, shown small as an epigraph",   // optional
+                            "note": "Why the candidate holds that opinion and what they would do about it." } ] },
 
   "story":   { "label": "02 · The proof", "nav": "The proof", "title": "…", "intro": "…", "big": "Project", "project": "My role", "meta": "dates and scope",
                "chapters": [ { "label": "The problem", "nav": "The problem", "title": "…", "body": ["paragraph", "paragraph"],
+                               "bullets": ["Optional list shown under the body, e.g. closing habits"],
                                "image": { "src": "https://…", "alt": "…", "caption": "…" },
                                "stat": { "value": "214", "label": "what it counts, with source and date" },
                                "tags": ["public", "measured", "design", "judgement"] } ] },
 
-  "ledger":  { "label": "03 · Your list, answered", "nav": "Your list", "title": "…", "intro": "…",
-               "rows": [ { "theme": "Product", "ask": "Their requirement, verbatim", "project": "Project names",
+  "ledger":  { "label": "03 — How I would work", "nav": "How I'd work", "title": "The work, *role by role.*", "intro": "…",
+               "cols": ["The need", "What I have done", "What I would do"],
+               "rows": [ { "theme": "Product", "ask": "Short topic title in the candidate's words", "project": "Project names",
                            "label": "public | measured | design | judgement",   // omit when gap is true
                            "gap": false,                                       // true = honest gap row
-                           "did": "Concrete evidence.", "will": "Concrete deliverable and timing." } ] },
+                           "did": "Concrete evidence.", "will": "Concrete deliverable and timing." } ] },   // no per-row disclaimers
 
   "plan":    { "label": "04 · Your first 90 days", "nav": "90 days", "title": "…", "intro": "…",
                "phases": [ { "label": "Month 1 · Foundation", "title": "…", "items": ["…"], "deliver": "What they would have." } ],
-               "rhythm": [ { "title": "Overlap", "text": "…" } ], "foot": "This is my approach, to test with you." },
+               "rhythm": [ { "title": "Overlap", "text": "…" } ], "foot": "I would tune all of this with you in week one." },
 
   "creative": { "label": "05 · Marketing and launch creative", "nav": "Marketing work", "title": "…", "intro": "…", "items": [ { "src": "https://…", "alt": "…", "caption": "…" } ] },
   "ask":      { "label": "06 · What I would like to learn from you", "title": "…", "intro": "…", "items": [ { "q": "Question", "why": "Why the answer changes the design." } ] },
   "close":    { "label": "07 · The short version", "nav": "Why me", "headline": "…", "reasons": [ { "title": "…", "text": "…" } ],
                 "ctas": [ { "label": "Reply", "href": "mailto:…" }, { "label": "Book a call", "href": "https://…" } ], "signoff": "…" },
+  "sourcesLabel": "Sources",
   "sources":  [ { "label": "site.com", "url": "https://…", "note": "what I used it for" } ],
-  "fine":     "What is public, what is proposal, and that no outcome figures are claimed."
+  "fine":     "One short footer note: built from public information only, plans are opinions to test, figures about the candidate's work are dated and from their portfolio."
 }
 ```
 
@@ -59,4 +64,4 @@ Evidence labels: **public** (anyone can check it), **measured** (a dated number 
 
 ## Matching the candidate's own brand
 
-Pull fonts, colours, radius and tone from the candidate's portfolio or site, and pass them through `theme`. Use their portrait and avatar (from their own public site) so the page reads as part of the same identity. In headings, wrap one to three words in `*asterisks*` to set them in the serif accent. Mirror their label style (for example `01 — The brief`) and keep the page flat: hairline borders, no gradients, no stock illustrations. Before building, compare a screenshot of the page with a screenshot of the portfolio.
+Pull fonts, colours, radius and tone from the candidate's portfolio or site, and pass them through `theme`. Use their portrait and avatar (from their own public site) so the page reads as part of the same identity. In headings, wrap one to three words in `*asterisks*` to set them in the serif accent. Mirror their label style (for example `01 — My read`) and keep the page flat: hairline borders, no gradients, no stock illustrations. Before building, compare a screenshot of the page with a screenshot of the portfolio.

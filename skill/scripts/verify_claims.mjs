@@ -77,6 +77,14 @@ for (const r of (content.ledger && content.ledger.rows) || []) {
 if (!(content.meta && content.meta.expires)) warns.push("meta.expires is empty; the build will default to 30 days");
 if (!content.sources || !content.sources.length) warns.push("no sources listed");
 
+// Voice lint: a page that keeps talking about its own sources reads like homework. Keep that to the footer.
+const META = [/\byou asked\b/i, /\byour (role|job) (description|post|posting|ad)\b/i, /\bI read your\b/i, /\bfrom your (site|website|pages)\b/i, /\bpublic pages\b/i, /\byour words\b/i, /\bwhat I heard\b/i, /\bto test with you\b/i, /\byou wrote\b/i, /\byou said\b/i];
+let metaHits = 0; const metaWhere = [];
+for (const { key, v } of strings) { if (key === "fine") continue; for (const re of META) if (re.test(v)) { metaHits++; metaWhere.push(`${key}: "${v.slice(0, 70)}…"`); } }
+if (metaHits > 3) warns.push(`voice: ${metaHits} lines talk about the sources or the job post (limit about 3). Rewrite them as the candidate's own point of view and keep sourcing to the footer:\n        ${metaWhere.join("\n        ")}`);
+let quoted = 0; for (const { v } of strings) quoted += (v.match(/[“"][^”"]{6,}[”"]/g) || []).length;
+if (quoted > 12) warns.push(`voice: ${quoted} quoted passages; quote the company's words only to make a point (about five on a page).`);
+
 console.log(`checked ${strings.length} text fields`);
 warns.forEach((w) => console.log(`warn  ${w}`));
 fails.forEach((f) => console.log(`FAIL  ${f}`));

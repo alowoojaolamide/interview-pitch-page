@@ -63,6 +63,7 @@
     var s = c.heard; if (!s) return ""; NAV.push(["heard", s.nav || "What I heard"]);
     return '<section id="heard"><div class="wrap">' + head(s.label || "01 What I heard", s.title, s.intro) +
       '<div class="heard-list">' + (s.items || []).map(function (i) {
+        if (i.headline) return '<div class="heard-item" data-r><h3 class="heard-h">' + hd(i.headline) + "</h3><div>" + (i.theme ? '<span class="label">' + esc(i.theme) + "</span>" : "") + "<p>" + md(i.note) + "</p>" + (i.quote ? '<p class="epi">&ldquo;' + esc(i.quote) + "&rdquo;</p>" : "") + "</div></div>";
         return '<div class="heard-item" data-r><q>' + esc(i.quote) + "</q><div>" + (i.theme ? '<span class="label">' + esc(i.theme) + "</span>" : "") + "<p>" + md(i.note) + "</p></div></div>";
       }).join("") + "</div>" + (s.foot ? '<p class="fine" data-r>' + md(s.foot) + "</p>" : "") + "</div></section>";
   }
@@ -74,22 +75,23 @@
       (s.meta ? '<p class="lead" style="margin-top:.6rem">' + md(s.meta) + "</p>" : "") +
       '<ol class="chap-list" aria-label="Chapters">' + ch.map(function (x, i) { return '<li><a href="#chap-' + i + '"><b>0' + (i + 1) + "</b>" + esc(x.nav || x.title) + "</a></li>"; }).join("") + "</ol></aside>" +
       '<div class="chapters">' + ch.map(function (x, i) {
-        return '<article class="chap" id="chap-' + i + '" data-r><p class="label">' + esc(x.label || "") + "</p><h3>" + esc(x.title) + "</h3>" + paras(x.body) +
+        return '<article class="chap" id="chap-' + i + '" data-r><p class="label">' + esc(x.label || "") + "</p><h3>" + esc(x.title) + "</h3>" + paras(x.body) + (x.bullets ? "<ul>" + x.bullets.map(function (b) { return "<li>" + md(b) + "</li>"; }).join("") + "</ul>" : "") +
           (x.stat ? '<div class="stat"><b data-count="' + esc(x.stat.value) + '">' + esc(x.stat.value) + "</b><span>" + esc(x.stat.label) + "</span></div>" : "") +
           (x.image ? img(x.image, "par") : "") + '<div class="tags">' + (x.tags || []).map(tag).join("") + "</div></article>";
       }).join("") + "</div></div></div></section>";
   }
   function ledger(c) {
     var s = c.ledger; if (!s) return ""; NAV.push(["ledger", s.nav || "Your list"]);
+    var cols = s.cols && s.cols.length === 3 ? s.cols : ["The need", "What I have done", "What I would do"];
     var themes = []; (s.rows || []).forEach(function (r) { if (r.theme && themes.indexOf(r.theme) < 0) themes.push(r.theme); });
     return '<section id="ledger"><div class="wrap">' + head(s.label || "03 Your list, answered", s.title, s.intro) +
       '<div class="filters" role="group" aria-label="Filter by theme"><button type="button" aria-pressed="true" data-f="">All</button>' + themes.map(function (t) { return '<button type="button" aria-pressed="false" data-f="' + esc(t) + '">' + esc(t) + "</button>"; }).join("") + "</div>" +
-      '<div class="led-head label" aria-hidden="true"><span>You asked</span><span>What I did</span><span>What I would do for you</span></div>' +
+      '<div class="led-head label" aria-hidden="true"><span>' + esc(cols[0]) + "</span><span>" + esc(cols[1]) + "</span><span>" + esc(cols[2]) + "</span></div>" +
       (s.rows || []).map(function (r) {
         var gap = r.gap;
-        return '<article class="led-row" data-theme="' + esc(r.theme || "") + '" data-r><div><div class="led-col-label">You asked</div><p class="ask">' + md(r.ask) + "</p></div>" +
-          '<div><div class="led-col-label">What I did</div><div class="who">' + (r.project ? '<span class="tag">' + esc(r.project) + "</span>" : "") + tag(gap ? "gap" : r.label) + "</div>" + paras(r.did) + "</div>" +
-          '<div class="will"><div class="led-col-label">What I would do for you</div><div class="who">' + tag("mine") + "</div>" + paras(r.will) + "</div></article>";
+        return '<article class="led-row" data-theme="' + esc(r.theme || "") + '" data-r><div><div class="led-col-label">' + esc(cols[0]) + '</div><p class="ask">' + md(r.ask) + "</p></div>" +
+          '<div><div class="led-col-label">' + esc(cols[1]) + '</div><div class="who">' + (r.project ? '<span class="tag">' + esc(r.project) + "</span>" : "") + tag(gap ? "gap" : r.label) + "</div>" + paras(r.did) + "</div>" +
+          '<div class="will"><div class="led-col-label">' + esc(cols[2]) + "</div>" + paras(r.will) + "</div></article>";
       }).join("") + "</div></section>";
   }
   function plan(c) {
@@ -121,7 +123,7 @@
   }
   function sources(c) {
     var s = c.sources; if (!s) return "";
-    return '<section class="sources" id="sources"><div class="wrap"><p class="label">What I read to prepare this</p><ul>' + s.map(function (x) {
+    return '<section class="sources" id="sources"><div class="wrap"><p class="label">' + esc(c.sourcesLabel || "Sources") + "</p><ul>" + s.map(function (x) {
       return "<li><a href=\"" + esc(x.url) + '" target="_blank" rel="noopener noreferrer">' + esc(x.label) + "</a>" + (x.note ? " &middot; " + esc(x.note) : "") + "</li>";
     }).join("") + "</ul>" + (c.fine ? '<p class="fine">' + md(c.fine) + "</p>" : "") + "</div></section>";
   }

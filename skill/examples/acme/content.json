@@ -26,7 +26,7 @@
   "hero": {
     "eyebrow": "Senior Product Designer",
     "headline": "Designing the next release of Acme’s habit product.",
-    "sub": "I read your site and the role. Here is what I have done for each thing you asked, and how I would spend the first three months.",
+    "sub": "Habit apps fail the same way: they nag on their own schedule. I would build the one that lets people set the pace, and keep it that way as it grows.",
     "cta": {
       "label": "See how I would start",
       "to": "heard"
@@ -39,24 +39,27 @@
     "Handoff"
   ],
   "heard": {
-    "title": "Your words, and what they tell me.",
-    "intro": "Two lines from the role.",
+    "label": "01 — My read",
+    "nav": "My read",
+    "title": "Two things I would *protect.*",
     "items": [
       {
-        "quote": "Own the experience from first sketch to launch.",
-        "theme": "The role",
-        "note": "One designer, one thread."
+        "headline": "The reminder is the product.",
+        "theme": "The product",
+        "quote": "Reminders people actually keep.",
+        "note": "If a nudge arrives at the wrong moment once, it is muted for good. I would make the timing the user's choice from the first screen."
       },
       {
-        "quote": "Reminders people actually keep.",
-        "theme": "The product",
-        "note": "The product lives or dies on trust in the nudge."
+        "headline": "One designer, one thread.",
+        "theme": "The role",
+        "quote": "first sketch to launch",
+        "note": "The same hands should draw the journey, the system and the launch page, so the product sounds like one person wrote it."
       }
     ]
   },
   "story": {
     "title": "One product from sketch to launch.",
-    "intro": "Orbit is a fictional example.",
+    "intro": "Orbit is a fictional example: a habit app I founded, where the whole job was trust in the nudge.",
     "big": "Orbit",
     "project": "Founder and designer",
     "meta": "Public launch in two cities.",
@@ -93,12 +96,12 @@
     ]
   },
   "ledger": {
-    "title": "Every line of the role, answered.",
-    "intro": "For each line: what you asked, what I did, and what I would do.",
+    "title": "The work, *role by role.*",
+    "intro": "Where I have done each thing before, and what I would do first. Where I have not, I say so.",
     "rows": [
       {
         "theme": "Product",
-        "ask": "Own the experience from first sketch to launch.",
+        "ask": "Owning the experience",
         "project": "Orbit",
         "label": "public",
         "did": "Founded and designed Orbit from first sketch to a public launch in two cities.",
@@ -106,7 +109,7 @@
       },
       {
         "theme": "Systems",
-        "ask": "Build and maintain a component library.",
+        "ask": "A component library",
         "project": "Fieldwork",
         "label": "design",
         "did": "Designed a component library of 40 components for a field-service tool.",
@@ -114,17 +117,24 @@
       },
       {
         "theme": "Trust",
-        "ask": "Experience with finance products.",
+        "ask": "Finance products",
         "project": "Orbit",
         "gap": true,
         "did": "This is my honest gap: I have not shipped a finance product.",
         "will": "A data map and a plain-language consent review before any screen."
       }
+    ],
+    "label": "03 — How I would work",
+    "nav": "How I'd work",
+    "cols": [
+      "The need",
+      "What I have done",
+      "What I would do"
     ]
   },
   "plan": {
-    "title": "Your three months.",
-    "intro": "I kept your frame and filled it in.",
+    "title": "The first three months, *what goes in each.*",
+    "intro": "Here is how I would spend them.",
     "phases": [
       {
         "label": "Month 1 · Discover",
@@ -153,7 +163,7 @@
         "deliver": "A QA-checked build."
       }
     ],
-    "foot": "This is my approach, to test with you."
+    "foot": "I would tune all of this with you in week one."
   },
   "ask": {
     "title": "Two questions.",
@@ -162,7 +172,8 @@
         "q": "What does a good first month look like?",
         "why": "It changes what I design first."
       }
-    ]
+    ],
+    "intro": "What I would want to know before I draw anything."
   },
   "close": {
     "headline": "I would like to build this with you.",
@@ -195,5 +206,6 @@
       "note": "what the studio does"
     }
   ],
-  "fine": "Everything about the company comes from public pages and the role description. No outcome figures are claimed beyond those labelled with a source."
+  "fine": "Built from public information only. Read the plans as opinions I would like to test with you.",
+  "sourcesLabel": "Sources"
 }

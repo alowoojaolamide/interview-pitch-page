@@ -45,12 +45,21 @@ One command turns a job description plus public research into a private page for
 
 ## Writing rules for the page
 
-- Plain, specific, warm. Short sentences. No hype words, no "passionate", no "synergy".
-- Quote the company's own words back, in quotation marks, only when they appear on a public page.
-- Each ledger row: **did** (one or two concrete facts with the project name) and **will** (one concrete deliverable and when).
-- Always include one **honest gap** if the job description has a requirement the candidate cannot evidence.
-- Four questions at most for "what I would like to learn from you". They must be questions whose answer changes what is designed first.
+**Voice: the page is the candidate's own thinking.** It must never talk about how it was made.
+
+- **No commentary about sources or the job post** in headings, intros or body copy. Avoid "I read your site", "you asked", "from your job description", "your words", "what I heard", "you wrote". Sourcing lives in **one quiet footer note** and the sources list, written in the candidate's voice ("Built from public information only…").
+- **Open with a point of view**, not a summary of the brief. The hero should say something the candidate believes about the product or the people it serves.
+- **Quote the company's words about five times on the whole page**, each as a small epigraph that backs up the candidate's own opinion. Never use their wording as a heading.
+- **Headlines are the candidate's opinions** ("Three things I would protect"), not labels for the job post. Ledger rows get short topic titles in the candidate's words, not the posting's wording. Column heads say **The need / What I have done / What I would do**.
+- **One honest-gap row** when a requirement cannot be evidenced; it says so plainly, then what carries over. No per-row "my approach" disclaimers; the column head already says it is a plan.
+- Plain, specific, warm. Short sentences. No hype words ("passionate", "synergy"), no filler like "I am excited to".
+- Each ledger row: **have done** (one or two concrete facts with the project name) and **would do** (one concrete deliverable and when).
+- Keep their own frame where it is genuinely theirs, such as the Month 1/2/3 labels, and say so once.
+- Four questions at most for "what I would like to learn from you", each one a question whose answer changes what is designed first.
 - If the role's location, hours or eligibility rules could be a blocker, do not hide it on the page. Tell the user in the report so they can raise it early.
+- Do not show screenshots that reveal business data the candidate keeps private (revenue, payouts, user lists). Check every image before it goes on a page.
+
+`verify_claims.mjs` runs a voice lint: it warns when source-talk appears more than about three times or when quotes pile up. Treat that warning as a rewrite request.
 
 ## Design rules for the page
 
