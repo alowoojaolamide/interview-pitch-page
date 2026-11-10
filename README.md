@@ -52,6 +52,7 @@ Generate your private cue card with `node skill/scripts/cue_card.mjs --content .
 skill/SKILL.md            the workflow the agent follows
 skill/scripts/init_workspace.mjs, new_page.mjs   scaffold the private workspace and a new page
 skill/scripts/build.mjs   encrypt and assemble a page; revoke; clean expired
+skill/scripts/follow_script.mjs   word-for-word script that follows the page, with an AI section (md, html, pdf)
 skill/scripts/cue_card.mjs   generate the private interview cue card (markdown and 16:9 slides) from a page
 skill/scripts/smoke_test.py   end-to-end check of a built page (optional, needs Playwright)
 skill/scripts/verify_claims.mjs   the honesty gate
