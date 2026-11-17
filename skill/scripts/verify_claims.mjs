@@ -94,6 +94,25 @@ if (metaHits > 3) warns.push(`voice: ${metaHits} lines talk about the sources or
 let quoted = 0; for (const { v } of strings) quoted += (v.match(/[“"][^”"]{6,}[”"]/g) || []).length;
 if (quoted > 12) warns.push(`voice: ${quoted} quoted passages; quote the company's words only to make a point (about five on a page).`);
 
+
+// Plain-language lint: written for someone who knows nothing about the candidate or design. Warns only.
+const JARGON = [/\bIA\b/, /\btokens?\b/i, /\bMVP\b/, /\bhand-?off\b/i, /\bdesign system\b/i, /\bjourney maps?\b/i, /\bstakeholders?\b/i, /\bartifacts?\b/i, /\bheuristics?\b/i, /\bhigh-fidelity\b/i, /\blow-fidelity\b/i, /\bwireframes?\b/i, /\bsynthesis\b/i, /\bideation\b/i, /\bfunnel\b/i, /\bscal(e|able|ing)\b/i, /\bleverage\b/i];
+const LONGFORM = new Set(["did", "will", "body", "note", "why", "caption", "alt", "fine", "label", "nav", "kind", "theme", "statusNote", "decision", "with", "deliver", "text"]);
+const visible = strings.filter(({ key }) => !["did", "will", "alt", "fine", "kind", "nav", "tabTitle", "fontsHref", "display", "body", "mono", "tag", "subject", "to"].includes(key) || key === "body");
+const wordCount = visible.reduce((n, { v }) => n + (v.match(/\b[\w'’-]+\b/g) || []).length, 0);
+const sentences = visible.flatMap(({ v }) => v.split(/(?<=[.!?])\s+/)).filter((x) => x.split(/\s+/).length > 2);
+const avg = sentences.length ? sentences.reduce((n, x) => n + x.split(/\s+/).length, 0) / sentences.length : 0;
+const long = sentences.filter((x) => x.split(/\s+/).length > 26);
+const jargon = []; for (const { key, v } of visible) for (const re of JARGON) if (re.test(v)) jargon.push(`${key}: "${(v.match(re) || [""])[0]}"`);
+if (wordCount > 1700) warns.push(`plain: about ${wordCount} visible words. A 15-minute live page should be about 1,100 to 1,700. Cut screens, not font size. Move detail behind a tap.`);
+if (avg > 17) warns.push(`plain: sentences average ${avg.toFixed(1)} words (aim for 17 or fewer). Write it so a smart 12-year-old could follow it.`);
+if (long.length) warns.push(`plain: ${long.length} sentence(s) over 26 words, e.g. "${long[0].slice(0, 90)}…"`);
+if (jargon.length > 4) warns.push(`plain: ${jargon.length} jargon hits (${[...new Set(jargon)].slice(0, 6).join("; ")}). Say what it means in everyday words, or drop it.`);
+if (!content.hire) warns.push("hire: add a 'hire' section (how to work with me: where I am, contract and payment, hours and overlap, a small first project, ownership). Hiring risk is the decision, so answer it on the page.");
+if (!content.signals) warns.push("signals: add a 'signals' section: three plain signs it is working, framed as things to watch, not results.");
+const hasStory = content.story && (content.story.chapters || []).length >= 4;
+if (!hasStory) warns.push("story: tell the lead case as steps: situation, my guess, what I chose, how I would check it, what is live and what I would fix.");
+
 if (content.scope) {
   const sc = content.scope, used = (sc.features || []).filter((f) => f.in).reduce((n, f) => n + (+f.hours || 0), 0), cap = sc.budget && +sc.budget.hours;
   if (cap && used > cap) fails.push(`scope: the default first loop is ${used} hours but the budget is ${cap}. Move something to "waits".`);

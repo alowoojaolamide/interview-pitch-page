@@ -192,6 +192,11 @@
       '<div class="sc-actions"><a class="btn" data-mail href="#">Send this to me</a><button type="button" class="btn ghost" data-print>Print or save as PDF</button><button type="button" class="btn ghost" data-reset>Reset</button></div>' +
       (s.foot ? '<p class="sc-foot">' + md(s.foot) + "</p>" : "") + "</div></div>";
   }
+  function cardsSection(c, key, fallbackLabel, navLabel) {
+    var s = c[key]; if (!s) return ""; if (navLabel !== false) NAV.push([key, s.nav || navLabel]);
+    return '<section id="' + key + '" class="plain" style="padding-top:0"><div class="wrap">' + head(s.label || fallbackLabel, s.title, s.intro) +
+      '<div class="cards">' + (s.items || []).map(function (i, n) { return '<div class="card" data-r>' + (i.mark ? '<span class="mk">' + esc(i.mark) + "</span>" : '<span class="mk">' + ("0" + (n + 1)).slice(-2) + "</span>") + "<h3>" + esc(i.title) + "</h3><p>" + md(i.text) + "</p></div>"; }).join("") + "</div>" + (s.foot ? '<p class="plain-foot">' + md(s.foot) + "</p>" : "") + "</div></section>";
+  }
   function ask(c) {
     var s = c.ask; if (!s) return "";
     return '<section id="ask" style="padding-top:0"><div class="wrap">' + head(s.label || "06 What I would like to learn from you", s.title, s.intro) +
@@ -238,7 +243,7 @@
   function render(c) {
     applyTheme(c.theme); NAV = [];
     document.title = c.meta && c.meta.title ? c.meta.title : "Private";
-    var body = hero(c) + marquee(c) + heard(c) + story(c) + ledger(c) + plan(c) + creative(c) + ask(c) + close(c) + sources(c);
+    var body = hero(c) + marquee(c) + cardsSection(c, "glance", "At a glance", false) + heard(c) + story(c) + ledger(c) + plan(c) + cardsSection(c, "signals", "How we would know", "Success") + cardsSection(c, "hire", "Working together", "Working together") + creative(c) + ask(c) + close(c) + sources(c);
     var m = c.meta || {}, home = /^https:\/\//.test(m.home || "") ? m.home : "";
     var nav = '<nav class="topbar" aria-label="Sections">' +
       (m.avatar && /^https:\/\//.test(m.avatar) ? '<a class="avatar" href="' + (home ? esc(home) : "#top") + '"' + (home ? ' target="_blank" rel="noopener noreferrer"' : "") + ' aria-label="' + esc(m.avatarLabel || "Home") + '"><img src="' + esc(m.avatar) + '" alt="" width="44" height="44"></a>' : "") +

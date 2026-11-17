@@ -109,3 +109,14 @@ An optional floating button and slide-over that turns the last minutes of a call
 }
 ```
 The sheet shows a live hours meter ("Over by 30 hours: about 2 weeks later"), a decide-now / discuss-later switch per call, and buttons to email the result, print or save as PDF, and reset. The checker fails a page whose default "in" list exceeds the budget.
+
+## Plain-card sections: `glance`, `signals`, `hire`
+
+Three optional sections share one shape (cards with a small mark, a short title and one or two sentences):
+
+```jsonc
+"glance":  { "label": "At a glance", "title": "Three things to know about *me.*", "items": [ { "mark": "Who", "title": "One short claim.", "text": "One plain sentence." } ] },
+"signals": { "label": "05 · How we would know", "nav": "Success", "title": "…", "intro": "Things to watch, not results.", "items": [ { "mark": "1", "title": "…", "text": "…" } ] },
+"hire":    { "label": "06 · Working together", "nav": "Working together", "title": "…", "intro": "Where the candidate is and how it works.", "items": [ { "mark": "Where", "title": "…", "text": "…" } ] }
+```
+`mark` is optional (numbers are used when absent); `foot` adds a note under the cards. `glance` is not added to the top nav. The checker warns when `hire`, `signals` or a stepwise story are missing, and when the page is too long, too jargon-heavy or too wordy per sentence.
