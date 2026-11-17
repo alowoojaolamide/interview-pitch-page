@@ -39,7 +39,8 @@
       "8",
       "9",
       "90",
-      "91"
+      "91",
+      "100"
     ]
   },
   "theme": {
@@ -529,5 +530,61 @@
       "subject": "First release scope"
     },
     "foot": "The hours are my estimates, to tune together in week one."
+  },
+  "signals": {
+    "label": "05 · How we would know",
+    "nav": "Success",
+    "title": "Three signs it is *working.*",
+    "intro": "We would agree these in week one. They are things to watch, not results.",
+    "items": [
+      {
+        "mark": "1",
+        "title": "People come back tomorrow.",
+        "text": "A good first week ends with a second visit."
+      },
+      {
+        "mark": "2",
+        "title": "People finish the first task.",
+        "text": "If they finish it, the steps make sense."
+      },
+      {
+        "mark": "3",
+        "title": "People tell a friend.",
+        "text": "A simple sign that they trust it."
+      }
+    ]
+  },
+  "hire": {
+    "label": "06 · Working together",
+    "nav": "Working together",
+    "title": "Working together, *made simple.*",
+    "intro": "Where I am and how it would work.",
+    "items": [
+      {
+        "mark": "Where",
+        "title": "I am in a different country.",
+        "text": "If the role needs me in yours, please tell me now."
+      },
+      {
+        "mark": "How",
+        "title": "I work on contract.",
+        "text": "I can sign your standard agreement."
+      },
+      {
+        "mark": "Time",
+        "title": "Up to 100 hours a month.",
+        "text": "We overlap for two hours each day, and you get a written update every week."
+      },
+      {
+        "mark": "Start",
+        "title": "Begin with one small project.",
+        "text": "After that, we both decide what next."
+      },
+      {
+        "mark": "Yours",
+        "title": "What I make is yours.",
+        "text": "I would put that in writing."
+      }
+    ]
   }
 }
