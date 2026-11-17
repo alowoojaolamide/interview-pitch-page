@@ -16,3 +16,6 @@ Every hiring decision is a risk decision. Name the risk (location, contract, a m
 
 ## Self-scoring rubric (use it to review a finished page)
 Eligibility and hiring risk 15, domain match 10, story (problem, guess, decision, outcome) 15, evidence and results 15, stakeholder and risk handling 10, fits the live time 10, craft 10, honesty 5, plan tied to their process 5, references 5. Treat the total as a judgement, not a measurement.
+
+## Learning from a very simple portfolio
+A designer's own site carries about 150 words on its front page: one huge sentence, a three-sentence intro, and the work as a bare list of name, type and year. No cards, no marquee, tiny labels, white space. The lesson for pitch pages: lead each screen with one plain sentence, keep about 120 words or fewer per screen, prefer a list to a grid of boxes, and drop anything that does not help the reader decide. The checker flags screens over 120 words.

@@ -113,6 +113,13 @@ if (!content.signals) warns.push("signals: add a 'signals' section: three plain 
 const hasStory = content.story && (content.story.chapters || []).length >= 4;
 if (!hasStory) warns.push("story: tell the lead case as steps: situation, my guess, what I chose, how I would check it, what is live and what I would fix.");
 
+// One idea per screen: a very simple portfolio says almost nothing per screen. Flag any section that carries too much.
+for (const [sec, v] of Object.entries(content)) {
+  if (["meta", "theme", "scope", "sources", "fine", "sourcesLabel", "ledger", "plan"].includes(sec)) continue;
+  let n = 0; (function w(x, k) { if (typeof x === "string") { if (!/^https?:|^mailto:/.test(x) && !["src", "href", "alt", "did", "will", "fontsHref", "display", "body", "mono"].includes(k)) n += (x.match(/\b[\w'’-]+\b/g) || []).length; } else if (Array.isArray(x)) x.forEach((y) => w(y, k)); else if (x && typeof x === "object") for (const [kk, y] of Object.entries(x)) w(y, kk); })(v, "");
+  if (n > 120) warns.push(`plain: section "${sec}" has about ${n} words (aim for 120 or fewer per screen). Say less, or move detail behind a tap.`);
+}
+
 if (content.scope) {
   const sc = content.scope, used = (sc.features || []).filter((f) => f.in).reduce((n, f) => n + (+f.hours || 0), 0), cap = sc.budget && +sc.budget.hours;
   if (cap && used > cap) fails.push(`scope: the default first loop is ${used} hours but the budget is ${cap}. Move something to "waits".`);
